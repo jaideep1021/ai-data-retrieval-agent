@@ -1,6 +1,6 @@
 # Evidence-Grounded AI Data Retrieval Agent
 
-**v0.1.0 · Week 1 research baseline for Dr. Sibdari · 23 October 2026**
+**v0.1.0 · Week 1 research baseline**
 
 This Python program proposes corrections to a small CSV of Python Enhancement
 Proposal (PEP) metadata. It searches for the official page, opens it in a browser,
