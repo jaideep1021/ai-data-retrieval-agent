@@ -1,0 +1,22 @@
+# Credentials (only the placeholder template is publishable)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+# Local environments and caches
+.venv/
+venv/
+agent/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.DS_Store
+# Private runtime material; samples live in examples/
+runs/
+evidence/
+results*.csv
+*.log
+*.tmp

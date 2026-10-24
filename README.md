@@ -1,107 +1,145 @@
-! use shortcut - cmd+shift+v
-! use - cmd+shift+p : markdown 
-
 # Evidence-Grounded AI Data Retrieval Agent
 
-**First-week research prototype for Dr. Sibdari — October 23, 2026**
+**v0.1.0 · Week 1 research baseline for Dr. Sibdari · 23 October 2026**
 
-A small, auditable Python pipeline that identifies a missing or questionable attribute in a dataset; discovers and fetches an official public webpage; uses Gemini to extract a candidate replacement and evidence quote; verifies the candidate against an authoritative reference; and records a proposed correction with provenance.
+This Python program proposes corrections to a small CSV of Python Enhancement
+Proposal (PEP) metadata. It searches for the official page, opens it in a browser,
+asks Gemini for one value and a supporting quote, then checks that value against
+the official PEP JSON dataset. It writes results for review; it never edits input data.
 
-> **Status:**Sucessfully processed **8 of 8 synthetic PEP test cases** with `ACCEPT`, zero `REVIEW`, and zero `ERROR` results. The observed pass rate applies to this deliberately constructed, limited test set **only**, not to unfamiliar sources or real-world ambiguous records. This README describes the existing implementation; it is not proof of additional tests.
+The eight input records contain deliberately missing or incorrect values. They are
+an educational benchmark, not evidence of errors on python.org. This is a fixed,
+sequential tool workflow, not a general autonomous research agent.
 
-## 1. Research problem and objective
+## Start here
 
-Real datasets have missing, incorrect, or outdated attributes. A language model can suggest a plausible answer, but plausibility is not sufficient. The objective is to produce a **traceable proposed correction** that includes the original value, retrieved value, source URL, supporting evidence, verification outcome, and decision.
+1. Install Git and Python 3.13 (the baseline was verified with **3.13.5 on macOS ARM64**).
+2. Clone this repository and create an isolated Python environment below.
+3. Install the pinned packages and Chromium browser.
+4. Run the offline tests; no API keys are needed for these.
+5. Copy `.env.example` to `.env` and enter your own provider keys.
+6. Review [scraping policy and concepts](docs/scraping.md), then try one PEP.
 
-The first-week benchmark uses **Python Enhancement Proposals (PEPs)** because the official PEP site publishes human-readable pages and a machine-readable JSON index. We deliberately remove or corrupt values in a tiny CSV, then attempt to recover them from the public webpage and compare the result with the official JSON record. These defects are **synthetic**; they do not imply errors in the PEP website.
+All commands run in the repository folder. Type terminal commands at the shell
+prompt. Python statements such as `from urllib.robotparser import RobotFileParser`
+belong in a `.py` file or the Python interpreter, **not directly in zsh/PowerShell**.
 
-## 2. Architecture
+## Clone and install
 
-```mermaid
-flowchart TD
-    A["records.csv<br/>PEP ID, attribute, original value"] --> B["Validate input and load official PEP reference JSON"]
-    B --> C["Search: SerpApi Google query"]
-    C --> D{"Matching official PEP URL returned?"}
-    D -->|Yes| E["Selected official result<br/>discovery_method = serpapi"]
-    D -->|No| F["Construct canonical PEP URL<br/>discovery_method = canonical_fallback"]
-    E --> G["Playwright Chromium<br/>navigate and validate URL/status"]
-    F --> G
-    G --> H["Save visible page text<br/>evidence/pep_NNNN.txt"]
-    G --> I["Gemini structured extraction<br/>value + evidence_quote"]
-    H --> J["Evidence-presence check"]
-    I --> J
-    B --> K["Official reference value<br/>peps.json"]
-    K --> L["Exact normalized-value comparison"]
-    J --> M{"Both verification gates pass?"}
-    L --> M
-    M -->|No| N["REVIEW"]
-    M -->|Yes, changed| O["ACCEPT"]
-    M -->|Yes, unchanged| P["NO_CHANGE"]
-    G -.->|Exception| Q["ERROR + error_stage"]
-    I -.->|Exception| Q
-    N --> R["results.csv<br/>provenance + decision"]
-    O --> R
-    P --> R
-    Q --> R
-```
-
-**Separation of responsibilities:** The LLM **proposes** a candidate; deterministic validators **decide whether the candidate passes the current acceptance rules**. The input CSV is not silently overwritten. The official JSON reference is loaded before processing records.
-
-## 3. Tools and why they are used
-
-| Component | Tool | Actual responsibility | Why chosen |
-|---|---|---|---|
-| Input/output | Python `csv` | Read `records.csv`, write `results.csv` | Simple, transparent, portable |
-| Search discovery | `serpapi` | Google query; inspect organic result links | Search discovery without manually parsing a search-result page |
-| Fallback discovery | Python URL template | Build `https://peps.python.org/pep-NNNN/` | Controlled fallback for this specific dataset when no matching search result appears |
-| Browser retrieval | Playwright + Chromium | Navigate, validate HTTP/redirect, read `body.inner_text()` | Real-browser path that can handle JavaScript-rendered content when necessary |
-| Structured extraction | Gemini via `google-genai` | Extract one field and a short literal quote into validated JSON | Handles semi-structured text and varying field presentation |
-| Output schema | Pydantic | `Extraction(value, evidence_quote)` | Predictable JSON fields and data validation |
-| Reference verification | `requests` + official PEP API | Load and compare the expected field | Deterministic reference comparison in the benchmark |
-| Provenance | Local evidence files + CSV | Preserve source text, URL, search method and verification flags | Makes results reproducible and reviewable |
-
-Official API: https://peps.python.org/api/ and https://peps.python.org/api/peps.json
-
-## 4. Project contents
-
-```text
-ai-data-retrieval-agent/
-├── agent.py           # Working agent implementation
-├── records.csv        # Eight intentionally imperfect test records
-├── .env               # Private API keys and selected Gemini model
-├── .gitignore         # Excludes secrets, venv and generated outputs
-├── README.md          # This document
-├── scraping_demo.py   # Optional standalone scraper comparison
-├── results.csv        # Generated decisions, values, and provenance
-└── evidence/
-    ├── pep_0008.txt
-    ├── pep_0020.txt
-    └── ...             # Captured webpage text, one per fetched PEP
-```
-
-`results.csv` and `evidence/` are runtime outputs. You may keep a sanitized sample for a meeting or publication, but do not confuse test outputs with independently curated truth data.
-
-## 5. Setup and execution
-
-**Requirements:** Python 3.10+; reachable PEP site; API keys for SerpApi and Gemini; Playwright Chromium installed.
+### macOS or Linux
 
 ```bash
-python3 -m venv .venv
+git clone https://github.com/jaideep1021/ai-data-retrieval-agent.git
+cd ai-data-retrieval-agent
+git checkout v0.1.0
+python3.13 -m venv .venv
 source .venv/bin/activate
-python -m pip install -U pip
-python -m pip install serpapi playwright google-genai pydantic python-dotenv requests beautifulsoup4
+python -m pip install -r requirements.txt
 python -m playwright install chromium
+python -m pip check
+python -m unittest discover -s tests -v
+cp .env.example .env
 ```
 
-Create `.env` (**never commit this file**):
+If your Python 3.13 executable is named `python3`, substitute that after checking
+`python3 --version`. On supported Linux systems, browser system libraries may also
+be needed: `python -m playwright install --with-deps chromium` (may request sudo).
+The browser install is a separate step from installing the Python package.
+See [Playwright browser installation](https://playwright.dev/python/docs/browsers).
+
+### Windows PowerShell
+
+```powershell
+git clone https://github.com/jaideep1021/ai-data-retrieval-agent.git
+cd ai-data-retrieval-agent
+git checkout v0.1.0
+py -3.13 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m playwright install chromium
+.\.venv\Scripts\python.exe -m pip check
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+Copy-Item .env.example .env
+```
+
+Using the executable directly avoids PowerShell activation-policy issues. For all
+later `python` commands on Windows, use `.\.venv\Scripts\python.exe` instead.
+Windows/Linux instructions are provided but were not locally executed; see
+[verification](docs/verification.md) for actual checks and CI status boundaries.
+
+`requirements.in` lists direct packages; `requirements.txt` pins the full resolved
+environment. These are version pins, not a hash-verified supply-chain lock. Do not
+upgrade packages individually when reproducing this release.
+
+## Set up API access
+
+Open `.env` in a text editor and replace the two placeholders:
 
 ```dotenv
-SERPAPI_KEY=your_serpapi_key
-GEMINI_API_KEY=your_gemini_api_key
+SERPAPI_KEY=your_actual_serpapi_key
+GEMINI_API_KEY=your_actual_gemini_api_key
 GEMINI_MODEL=gemini-3.5-flash-lite
 ```
 
-Example input `records.csv`:
+- Create/sign in to [SerpApi](https://serpapi.com/manage-api-key) and copy your API key.
+  The package is `serpapi`, the [official Python client](https://serpapi.com/integrations/python).
+- Create a Gemini API key in [Google AI Studio](https://aistudio.google.com/apikey).
+  Ensure your account/project can use the configured model and has quota.
+- Never paste keys into Python source, screenshots, issues or commits. `.env` is ignored.
+- Existing environment variables take precedence over `.env`. Only the specified
+  `.env` file is loaded; parent folders are not searched. `--env-file PATH` supports
+  an existing private file outside this repository.
+- `gemini-3.5-flash-lite` preserves the working Week 1 configuration. Model
+  availability can change; changing it is an experiment and should be documented.
+- Live execution uses provider quotas and may incur charges. One full sample run
+  requests eight searches and eight model extractions, plus provider SDK retries.
+
+## Run and inspect
+
+```bash
+python agent.py --version
+python agent.py --pep 8
+python agent.py
+```
+
+Each command creates a **new** `runs/<UTC-time>-<unique-id>/` directory. For an easy
+to-find output, choose a directory that does not exist yet:
+
+```bash
+python agent.py --pep 8 --output-dir runs/first-demo
+python agent.py --input examples/records.csv --output-dir runs/all-eight
+```
+
+An existing output directory is rejected, preserving its results. Unlike the original
+prototype, v0.1.0 does not overwrite a root-level `results.csv` or `evidence/`.
+Results are saved after processing (including completed rows on an interruption
+that unwinds Python); abrupt process termination or power loss can still lose rows.
+
+For the single-record example, a successful run usually reports `Active` and `ACCEPT`
+for PEP 8, plus verification flags set to true. The full example processes eight
+rows. Exact values, search fallback frequency, model quotes and pass counts can
+change. A historical eight-of-eight success does not promise future accuracy.
+
+Open `runs/first-demo/results.csv` in a text editor or spreadsheet. Inspect the
+supporting text in `runs/first-demo/evidence/pep_0008_<content-hash>.txt`. Keep generated output
+local. Each run also includes:
+
+| File | Purpose |
+|---|---|
+| `results.csv` | Proposed values, decisions, provenance and failure stages |
+| `evidence/pep_NNNN_<content-hash>.txt` | Full visible page-body text, not original HTML |
+| `reference.json` | The parsed official JSON snapshot used for comparison |
+| `manifest.json` | Baseline version, model, UTC time, Python version, input and reference SHA-256 hashes |
+
+The input hash identifies the full input file, even with `--pep`. Preserve your input
+alongside the run if you need to replay it; the program does not copy private input.
+Evidence hashes detect later file changes; they do not authenticate the publisher.
+Evidence filenames include a content hash, so different captures of the same PEP
+within a run retain separate files; identical captures reuse the same file.
+
+Exit status is 1 for technical errors, otherwise 0. `REVIEW` is a completed decision,
+so it does not produce a nonzero exit status. Always inspect decisions, not just exit status.
+
+## Input and decisions
 
 ```csv
 pep_number,attribute,current_value
@@ -109,200 +147,178 @@ pep_number,attribute,current_value
 20,type,
 257,created,
 484,status,Draft
-572,type,Process
-617,status,
-695,created,
-703,title,Unknown
 ```
 
-Run a single-record demonstration:
+Required headers are `pep_number`, `attribute`, `current_value`. Leave the current
+value empty when unknown. PEP IDs must be nonnegative integers; supported fields
+are `title`, `status`, `type`, `created`. Bad rows become `ERROR` and later rows
+continue; missing headers/empty input fail before API calls. `--pep` selects only
+matching IDs, so malformed IDs outside that filter are not processed.
 
-```bash
-python agent.py --pep 8
-```
-
-Run all eight:
-
-```bash
-python agent.py
-```
-
-Inspect outputs:
-
-```bash
-head -n 4 results.csv
-ls evidence/
-```
-
-**Important:** Running `--pep 8` writes `results.csv` containing only the selected record, because the current code overwrites that output file. Run the full command again to restore the eight-row results before presenting aggregate metrics.
-
-## 6. Walkthrough of the actual code
-
-The current `agent.py` follows these stages:
-
-1. **Configuration and schema:** `load_dotenv()` reads credentials; `Extraction(BaseModel)` declares optional `value` and `evidence_quote` fields. `VALID_FIELDS` restricts attributes to `title`, `status`, `type`, and `created`.
-2. **Reference load:** `load_reference_data()` downloads `https://peps.python.org/api/peps.json`. It provides the comparison values for each PEP. Loading once avoids an extra reference request per record.
-3. **Search discovery:** `discover_source(pep_number, search_client)` queries SerpApi with `PEP N site:peps.python.org` and inspects `organic_results`. `is_official_pep_url` validates protocol, host, and exact PEP path. When no exact match is returned, the code constructs the known official PEP URL and saves the discovery method and search issue. The fallback still must pass browser retrieval checks.
-4. **Browser retrieval:** `fetch_source(browser, url, pep_number)` launches a new Playwright page, navigates with `wait_until="domcontentloaded"`, checks HTTP status and the final official URL, waits for `body`, then calls `body.inner_text()`. It saves a UTF-8 text snapshot as `evidence/pep_NNNN.txt`, then closes the page. **It does not currently target specific PEP metadata DOM selectors or prove JavaScript rendering was required on the PEP site.**
-5. **Gemini extraction:** `extract_attribute(...)` provides a limited slice of the captured body text (first 12,000 characters), target ID and attribute, and rules against guessing. `generate_content()` requests JSON conforming to the Pydantic extraction schema with temperature set to zero. The code parses and validates the response. `temperature=0` may make generation more consistent; it does not guarantee factual correctness.
-6. **Verification:** `verify_extraction(...)` checks that the returned quote occurs in normalized captured page text and that the normalized candidate value equals the official JSON reference field. If either gate fails, it marks `REVIEW`. If both pass and the value differs from the original, `ACCEPT`; if it is already the same, `NO_CHANGE`.
-7. **Error handling:** `process_record` catches record-level errors and sets `ERROR`, `error_stage`, and `error`, so other records can still run. Errors may occur in input validation, discovery, retrieval, extraction, or verification.
-8. **Persistence and summary:** `save_results` exports data and provenance; `print_summary` gives counts and a verified pass rate for the processed input records.
-
-The current process is a **tool-orchestrated extraction pipeline** (sometimes described as an agentic workflow). It does not yet autonomously plan arbitrary multistep web investigations, select among competing sources, or iterate based on uncertainty.
-
-## 7. Provenance, validation and status meanings
-
-Important columns in `results.csv`:
-
-| Column | Meaning |
+| Decision | Meaning |
 |---|---|
-| `pep_number`, `attribute`, `current_value` | Target and the input value |
-| `retrieved_value` | LLM's proposed replacement |
-| `source_url` | Final official page URL after browser navigation |
-| `search_query` | Search issued to SerpApi |
-| `discovery_method` | `serpapi` or `canonical_fallback` |
-| `search_issue` | Why the matching search result was not selected, if applicable |
-| `evidence_quote` | Short quote from LLM output |
-| `evidence_file` | Stored page-body text captured by Playwright |
-| `reference_value`, `verification_url` | Benchmark comparison value and JSON source |
-| `evidence_valid`, `reference_matches` | The two implemented acceptance gates |
-| `decision` | `ACCEPT`, `NO_CHANGE`, `REVIEW`, or `ERROR` |
-| `error_stage`, `error`, `checked_at` | Failure context and UTC processing timestamp |
+| `ACCEPT` | Quote is present, value matches reference, and differs from input |
+| `NO_CHANGE` | Same checks pass and input already matches |
+| `REVIEW` | Quote missing/invented or candidate does not match reference |
+| `ERROR` | A technical or validation stage failed; no factual conclusion |
 
-**Status definitions:**
+Comparison collapses whitespace and ignores case. It does not normalize dates or
+prove a quote supports the requested field. A quote from anywhere in the page can
+pass the presence check. The webpage and JSON come from the **same publisher**;
+they are not independent corroboration. `ACCEPT` is a proposed correction for human
+review, not authorization to change a production dataset.
 
-- `ACCEPT`: the output passes both current checks and proposes a changed value; **not automatically an authorized write to the production dataset**.
-- `NO_CHANGE`: the output passes both checks and matches the existing input value.
-- `REVIEW`: extraction completed but one or both verification gates failed; retain the original until manual review.
-- `ERROR`: a stage failed technically; the result is not a factual decision.
+## Architecture and code walkthrough
 
-### Limitations of the verification method
+![Architecture](docs/architecture.png)
 
-- The PEP webpage and official PEP JSON API are two presentations of the **same authoritative PEP data**. Their agreement is a convenient benchmark oracle, **not independent two-source corroboration**.
-- The evidence check finds the quote somewhere in the page text. It does not yet establish that the quote semantically refers to exactly the requested field or entity.
-- There is no implemented confidence score, consensus voting, temporal freshness check, duplicate entity resolution, or general-purpose trust ranking. Avoid saying these exist.
-- `ACCEPT` is based on exact normalized comparison, appropriate for this narrow benchmark, but insufficient for dates with alternative formats, aliases, or context-dependent values.
-- No independent labeled test set or out-of-domain evaluation has been run in the provided results.
+The [SVG](docs/architecture.svg) and PNG open without a Mermaid extension. The editable source is
+[architecture.mmd](architecture.mmd). GitHub also renders the diagram below.
 
-## 8. Observed results (user-reported run)
-
-| PEP | Field | Proposed retrieved value | Discovery method | Decision |
-|---:|---|---|---|---|
-| 8 | status | Active | serpapi | ACCEPT |
-| 20 | type | Informational | canonical_fallback | ACCEPT |
-| 257 | created | 29-May-2001 | canonical_fallback | ACCEPT |
-| 484 | status | Final | serpapi | ACCEPT |
-| 572 | type | Standards Track | serpapi | ACCEPT |
-| 617 | status | Final | canonical_fallback | ACCEPT |
-| 695 | created | 15-Jun-2022 | serpapi | ACCEPT |
-| 703 | title | Making the Global Interpreter Lock Optional in CPython | canonical_fallback | ACCEPT |
-
-**Counts:** 8 processed; 8 accepted; 0 review; 0 errors. Four official URLs were discovered in the search results, and four used canonical fallback. The user-reported reference file contained 746 PEP objects at the time of that run. These are **observations from one execution**, not a population-level accuracy estimate.
-
-## 9. Web scraping: concepts and engineering decisions
-
-### Discovery is not scraping
-
-- **Discovery** locates *which URL* might contain an answer. SerpApi supplies search result metadata, including organic links.
-- **Retrieval** requests an actual source page and checks it loaded successfully.
-- **Parsing/scraping** transforms page HTML/DOM into useful structured or textual data.
-- **Extraction** isolates a requested fact from that data; here Gemini returns `value` + `evidence_quote`.
-- **Verification** tests a proposed fact against evidence/reference rules.
-
-### HTML and the DOM
-
-A page's HTML is source markup such as `<dt>Status</dt><dd>Active</dd>`. The **Document Object Model (DOM)** is a tree representation of the page that can be queried by tags, CSS selectors, or other locators. Browser JavaScript can add or modify DOM nodes after the initial HTML response. The text visible on a page may therefore differ from raw server HTML.
-
-### Static extraction: requests + BeautifulSoup
-
-For server-rendered content, a lightweight HTTP request and parser are often sufficient:
-
-```python
-import requests
-from bs4 import BeautifulSoup
-
-url = "https://peps.python.org/pep-0008/"
-response = requests.get(url, timeout=20)
-response.raise_for_status()
-soup = BeautifulSoup(response.text, "html.parser")
-print(soup.title.get_text(" ", strip=True) if soup.title else "No title")
+```mermaid
+flowchart TD
+    A["records.csv<br/>PEP ID, attribute, original value"] --> B["Validate input and load PEP reference JSON"]
+    B --> C["SerpApi search"]
+    C --> D{"Official PEP result found?"}
+    D -->|Yes| E["Search result"]
+    D -->|No| F["Canonical URL fallback"]
+    E --> G["Playwright browser retrieval"]
+    F --> G
+    G --> H["Save evidence text"]
+    G --> I["Gemini Pydantic JSON extraction"]
+    H --> J["Check literal evidence in page"]
+    I --> J
+    B --> K["PEP API reference value"]
+    K --> L["Compare extracted vs reference"]
+    J --> M{"Both checks pass?"}
+    L --> M
+    M -->|Yes, changed| N["ACCEPT"]
+    M -->|Yes, unchanged| O["NO_CHANGE"]
+    M -->|No| P["REVIEW"]
+    G -.->|Failed stage| Q["ERROR"]
+    I -.->|Failed stage| Q
+    N --> R["results.csv + provenance"]
+    O --> R
+    P --> R
+    Q --> R
 ```
 
-**Pros:** fast, small memory footprint, no browser process. **Cons:** it does not run JavaScript. Parsing the entire page body may mix navigation text, article text, related links and metadata.
+1. `read_records`: read and validate CSV structure; apply the optional PEP filter.
+2. `load_reference_data`: download official PEP JSON once; preserve a snapshot.
+3. `discover_source`: search using SerpApi; accept only the exact official HTTPS
+   host and PEP path, otherwise construct the known canonical PEP URL.
+4. `fetch_source`: use Playwright Chromium, check status and final URL, capture
+   visible text, save it and close the page even on failure.
+5. `extract_attribute`: send the first 12,000 characters to Gemini; request
+   `value` and `evidence_quote` with a Pydantic JSON schema. Treat page instructions
+   as untrusted. Schema validation checks shape, not truth.
+6. `verify_extraction`: compare the candidate to the reference and quote to the page.
+7. `save_results`: write a CSV through a temporary file and atomic replacement.
 
-### DOM selectors
+Stage comments in `agent.py` follow this sequence. `scraping_demo.py` is a separate
+teaching demonstration: static HTML parsing, browser text, then JavaScript changing
+an in-memory page from `Loading...` to `Published`. Run `python scraping_demo.py`
+after reviewing crawl policy; its first two steps access the public PEP page.
 
-In a browser, selectors target the exact data-bearing element, for example `page.locator("main")` or `page.locator(".metadata")` **when those selectors exist on the target site**. Inspect the actual markup in DevTools before choosing selectors. Avoid assuming every website uses the same structure. For PEPs, a sensible future enhancement is to locate the specific metadata definition list instead of asking Gemini to read up to 12,000 characters from the page body.
+## Tests without paid APIs
 
-### Dynamic rendering: Playwright
-
-Playwright controls Chromium, Firefox or WebKit. A browser can execute scripts, follow client-side navigation and wait for asynchronous DOM updates. The current pipeline uses Chromium to retrieve `body.inner_text()`, but has **not** established that the PEP pages require JavaScript. For dynamic sites, wait for the desired selector/content rather than sleeping a fixed number of seconds.
-
-```python
-from playwright.sync_api import sync_playwright
-
-with sync_playwright() as p:
-    browser = p.chromium.launch(headless=True)
-    page = browser.new_page()
-    page.goto("https://peps.python.org/pep-0008/", wait_until="domcontentloaded")
-    print(page.locator("body").inner_text()[:500])
-    browser.close()
+```bash
+python -m unittest discover -s tests -v
 ```
 
-**Pros:** sees rendered DOM; supports sophisticated browser interactions. **Cons:** slower and more resource-intensive than direct HTTP; dynamic page behavior introduces timing and reliability problems.
+The offline suite mocks external services and covers URL restrictions, search
+fallback, malformed input, all four decisions, HTTP/redirect/empty-page failures,
+page cleanup, invalid model JSON, missing credentials, reference failures and CSV
+persistence. One real-browser test is skipped by default. Enable it with:
 
-### Prefer a documented API when it satisfies the need
+```bash
+RUN_BROWSER_TESTS=1 python -m unittest discover -s tests -v
+```
 
-An official JSON/API endpoint is usually more stable and cheaper to consume than HTML scraping. This prototype intentionally reads a webpage to demonstrate web retrieval, but uses the PEP JSON API as its reference. In a production data pipeline, prefer authoritative structured endpoints whenever allowed and appropriate.
+PowerShell: `$env:RUN_BROWSER_TESTS="1"`, then run the same unittest command.
+This browser test uses only local HTML and incurs no API charges. GitHub Actions
+runs offline and browser tests on macOS, Windows and Ubuntu; a workflow definition
+is not evidence of a passing remote run. See [verification](docs/verification.md).
 
-### Responsible crawling and reliability
+## Troubleshooting
 
-1. Review the site's terms, applicable permissions, published APIs and `robots.txt` guidance before automated collection. Robots instructions manage crawling traffic; they are not an authorization mechanism by themselves.
-2. Set realistic timeouts; handle 404, 403, 429, 5xx, redirects, and malformed content explicitly.
-3. Limit concurrency and per-domain request rate; use a bounded exponential backoff when the site permits retries, including `Retry-After` where applicable. Do **not** retry 403/429 aggressively or bypass CAPTCHAs/access controls.
-4. Cache retrieved pages where appropriate, store fetch timestamps, and avoid recrawling unchanged URLs.
-5. Use a host allowlist and validate redirected destinations before using fetched data in an agent; do not let arbitrary content supply new instructions or uncontrolled URLs.
-6. Strip navigation and irrelevant text, minimize data passed to the LLM, and avoid collecting private or sensitive information unnecessarily.
-7. Keep a reproducible trail: source URL, fetch timestamp, method, captured content, quote, model identifier, validation result and exception details.
+| Symptom | What to check |
+|---|---|
+| `zsh: command not found: from` | Put Python code in a `.py` file and run `python file.py`, or enter `python` first |
+| `ModuleNotFoundError` | Use this repo's `.venv` Python; install `requirements.txt` there |
+| Browser executable missing | Run `python -m playwright install chromium` with that same Python |
+| Startup `FileNotFoundError` | Run in the repo root; check `--input` and required files |
+| Startup `FileExistsError` | Choose a fresh `--output-dir`; old runs are intentionally preserved |
+| Startup `RuntimeError` | Check both API keys are populated; check reference endpoint availability |
+| Startup `ValueError` | Check CSV headers, nonempty rows and `--pep` filter |
+| Startup HTTP/connection error | Check network/proxy/TLS and official JSON endpoint; do not disable TLS verification |
+| `canonical_fallback` | Search failed or returned no exact official match; inspect `search_issue` |
+| `ERROR`, validation | Check PEP number, supported attribute and reference availability |
+| `ERROR`, retrieval | Check official page availability, browser install, redirects and network access |
+| `ERROR`, extraction | Check Gemini quota/key/model, structured output support and response schema |
+| `REVIEW` | Inspect quote, captured text and reference; do not silently accept it |
+| 403/429 or quota exhaustion | Stop and check access/quota; retry later according to provider guidance |
+| README diagram looks wrong | Open `docs/architecture.svg` in a browser or view README on GitHub |
 
-For an interactive explanation, run `python scraping_demo.py`, which contrasts raw HTML parsing, live Playwright page retrieval and browser-executed JavaScript on a safe in-memory example.
+External exception text is intentionally omitted from logs/CSV because SDK errors
+can contain authenticated URLs. Error type and stage are retained. Startup failures
+can occur before an output directory exists. A reference outage prevents verification
+and stops the batch; record-level failures are retained in the CSV.
 
-## 10. Research evaluation plan (next milestone, not yet implemented)
+## Repository guide
 
-Separate the following metrics rather than reporting one unqualified accuracy figure:
+```text
+agent.py                 Pipeline with explanatory stage comments
+scraping_demo.py         Static HTML vs browser/JavaScript teaching demo
+records.csv              Original eight synthetic Week 1 records
+examples/                Reusable input examples, including invalid records
+.env.example             Placeholder configuration only
+.gitignore               Secrets, environments and generated-output exclusions
+requirements.in          Direct dependency pins
+requirements.txt         Complete dependency version pins
+VERSION                  0.1.0
+CHANGELOG.md              Release history and compatibility notes
+CONTRIBUTING.md           Safe update/release workflow
+architecture.mmd         Editable diagram source
+docs/architecture.svg    Readily viewable diagram
+docs/scraping.md          Concepts, robots/terms and responsible use
+docs/verification.md      Actual release verification record
+tests/                   Offline contracts and optional browser smoke test
+.github/workflows/       Cross-platform CI
+runs/                    Local outputs only (ignored by Git)
+```
 
-- **Discovery success:** percentage of official URLs found via search without canonical fallback.
-- **Retrieval success:** percentage of target webpages fetched and validated.
-- **Extraction correctness:** correct attribute values divided by cases with independently labeled truth.
-- **Evidence validity:** percentage with an authentic supporting quote relevant to the target fact.
-- **Coverage/abstention:** how often the pipeline returns `REVIEW` instead of inventing an answer for unsupported cases.
-- **Efficiency:** requests per record, latency per stage, cost per extracted field.
+## Limitations and next versions
 
-Suggested follow-up cases: a record with an already-correct value (`NO_CHANGE`), an unsupported field (`ERROR`), a missing webpage, a model returning an incorrect value (`REVIEW`), conflicting source claims, a record with ambiguous identity, and a recent value that may have changed.
+This baseline has one domain, known URL patterns, one reference publisher, serial
+processing, no autonomous planning and no general entity resolution. There is no
+calibrated confidence score, automatic robots enforcement, caching, explicit crawl
+delay, application-level retry/backoff, independent benchmark or semantic quote
+validator. Browser redirects are checked after navigation, not blocked before
+requests; this is not a sandbox for arbitrary user URLs. Temperature zero does not
+guarantee deterministic model output. Live services, page content and models can
+change despite pinned Python dependencies.
 
-For a future model comparison, contrast **deterministic CSS/DOM extraction vs. Gemini extraction** on the same labeled records. Assess correctness, provenance quality, latency, and cost.
+- **v0.1.x:** fix reproducibility defects while retaining the four decision meanings.
+- **v0.2.0:** automatic robots checks, caching and rate limits;
+  compare deterministic metadata parsing with Gemini on labeled cases.
+- **v0.3.0:** independent evaluation, ambiguous entities and conflicting sources;
+  report correctness, abstention, latency and cost separately.
+- **Later:** human review workflow and broader sources only after measured validation.
 
-## 11. Five-minute meeting walkthrough
+These are plans, not implemented features. Use semantic versioning: patch for fixes,
+minor for compatible capabilities, major for incompatible interfaces. Tag releases
+and record dependency/model/data changes in the changelog. To resume development
+after checking out the release tag, use `git switch main`.
 
-1. **Problem (45 s):** We have small data gaps. We need corrections backed by evidence rather than plausible guesses.
-2. **Architecture (60 s):** Input → SerpApi discovery (with controlled fallback) → Playwright fetch → Gemini JSON extraction → evidence and reference checks → auditable output.
-3. **Live demo (90 s):** Run `python agent.py --pep 8`; show official PEP page, evidence text file, and relevant CSV fields.
-4. **Scraping (60 s):** Explain raw HTML vs DOM; demonstrate Playwright's ability to render JavaScript using `scraping_demo.py`. Emphasize that the PEP pages themselves may not need a browser.
-5. **Research questions (45 s):** How should the system handle ambiguous identities, multiple disagreeing sources, temporal changes, and human review?
+No open-source license has been chosen for the project code yet; public visibility
+does not establish broad reuse rights. Third-party data and dependencies retain
+their respective terms. Discuss licensing before wider redistribution.
 
-**Backup plan:** Before the meeting, run `python agent.py` to restore all eight results. Keep a terminal screenshot or sanitized excerpt of `results.csv` and one `evidence/pep_0008.txt` file available in case a live API call fails.
+## References
 
-## 12. Current technical limitations and future architecture
-
-This prototype is intentionally narrow and synchronous. It uses a **known URL template**, a **single trusted domain**, **one source per record**, and an **official-reference equality check**. It also repeatedly searches individual PEP IDs rather than deduplicating/cacheing searches. It is therefore a good first-week demonstration, not yet a general autonomous web research agent.
-
-For a real dataset, the next architecture should introduce: input normalization and entity resolution; multi-source ranking; robust metadata-specific parsers and browser fallback; retry/backoff and caching; supporting quote-to-field attribution; conflict and temporal freshness handling; calibrated abstention/manual review; and benchmarked accuracy and cost reporting.
-
-## 13. Official documentation
-
-- PEP JSON API: https://peps.python.org/api/
-- SerpApi Python client: https://serpapi-python.readthedocs.io/en/latest/user_guide/client-usage.html
-- Playwright Python: https://playwright.dev/python/docs/api/class-page
-- Google Gemini structured outputs: https://ai.google.dev/gemini-api/docs/structured-output
-- Robots.txt introduction: https://developers.google.com/search/docs/crawling-indexing/robots/intro
+- [Official PEP JSON API](https://peps.python.org/api/)
+- [SerpApi Python integration](https://serpapi.com/integrations/python)
+- [Playwright browser installation](https://playwright.dev/python/docs/browsers)
+- [Gemini structured outputs](https://ai.google.dev/gemini-api/docs/structured-output)
+- [Robots Exclusion Protocol, RFC 9309](https://www.rfc-editor.org/rfc/rfc9309.html)

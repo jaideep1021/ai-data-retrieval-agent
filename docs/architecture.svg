@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="1120" viewBox="0 0 1100 1120" role="img" aria-labelledby="title desc">
+<title id="title">Week 1 evidence-grounded retrieval pipeline</title><desc id="desc">CSV input and reference snapshot feed search, browser retrieval, Gemini extraction and deterministic verification. Decisions and provenance are saved locally.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8" fill="#506680"/></marker></defs>
+<rect width="1100" height="1120" fill="#f5f8fc"/>
+<g font-family="Arial, sans-serif"><text x="60" y="58" font-size="30" font-weight="700" fill="#172a46">From missing data to a reviewable correction</text>
+<text x="60" y="91" font-size="17" fill="#506680">AI Data Retrieval Agent · v0.1.0 · Week 1 baseline</text>
+<rect x="60" y="130" width="600" height="92" rx="14" fill="#ffffff" stroke="#c9d5e3"/>
+<text x="82" y="161" font-size="19" font-weight="700" fill="#172a46">1  Read input CSV</text>
+<text x="82" y="188" font-size="16" fill="#425773">Validate headers; select PEP and requested attribute</text>
+<rect x="710" y="130" width="330" height="116" rx="14" fill="#e9f1ff" stroke="#c9d5e3"/>
+<text x="732" y="161" font-size="19" font-weight="700" fill="#172a46">Official PEP JSON</text>
+<text x="732" y="188" font-size="16" fill="#425773">Load once; save snapshot</text>
+<text x="732" y="212" font-size="16" fill="#425773">Same publisher as webpage</text>
+<rect x="60" y="266" width="600" height="116" rx="14" fill="#ffffff" stroke="#c9d5e3"/>
+<text x="82" y="297" font-size="19" font-weight="700" fill="#172a46">2  Discover official source</text>
+<text x="82" y="324" font-size="16" fill="#425773">SerpApi search → exact official PEP URL</text>
+<text x="82" y="348" font-size="16" fill="#425773">No matching result / search failure → canonical URL</text>
+<rect x="60" y="426" width="600" height="116" rx="14" fill="#ffffff" stroke="#c9d5e3"/>
+<text x="82" y="457" font-size="19" font-weight="700" fill="#172a46">3  Retrieve with Playwright</text>
+<text x="82" y="484" font-size="16" fill="#425773">Check HTTP response and final URL; read visible text</text>
+<text x="82" y="508" font-size="16" fill="#425773">Save content-hashed evidence; close page on failure</text>
+<rect x="60" y="586" width="600" height="116" rx="14" fill="#ffffff" stroke="#c9d5e3"/>
+<text x="82" y="617" font-size="19" font-weight="700" fill="#172a46">4  Extract with Gemini</text>
+<text x="82" y="644" font-size="16" fill="#425773">First 12,000 characters → value + supporting quote</text>
+<text x="82" y="668" font-size="16" fill="#425773">Pydantic validates JSON structure, not factual truth</text>
+<rect x="60" y="746" width="600" height="116" rx="14" fill="#e7f4ef" stroke="#c9d5e3"/>
+<text x="82" y="777" font-size="19" font-weight="700" fill="#172a46">5  Verify deterministically</text>
+<text x="82" y="804" font-size="16" fill="#425773">Quote present in normalized page text?</text>
+<text x="82" y="828" font-size="16" fill="#425773">Candidate equals normalized official reference value?</text>
+<path d="M360 222 L360 266" stroke="#506680" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<path d="M360 382 L360 426" stroke="#506680" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<path d="M360 542 L360 586" stroke="#506680" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<path d="M360 702 L360 746" stroke="#506680" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<path d="M875 246 L875 802 L662 802" stroke="#506680" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<rect x="60" y="910" width="600" height="116" rx="14" fill="#ffffff" stroke="#c9d5e3"/>
+<text x="82" y="941" font-size="19" font-weight="700" fill="#172a46">6  Save decisions and provenance</text>
+<text x="82" y="968" font-size="16" fill="#425773">Both pass: ACCEPT (changed) / NO_CHANGE (same)</text>
+<text x="82" y="992" font-size="16" fill="#425773">Failed check: REVIEW · Failed record stage: ERROR</text>
+<path d="M360 862 L360 910" stroke="#506680" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<rect x="710" y="910" width="330" height="116" rx="14" fill="#e9f1ff" stroke="#c9d5e3"/>
+<text x="732" y="941" font-size="19" font-weight="700" fill="#172a46">Local run directory</text>
+<text x="732" y="968" font-size="16" fill="#425773">results.csv + evidence/</text>
+<text x="732" y="992" font-size="16" fill="#425773">reference.json + manifest.json</text>
+<path d="M660 968 L710 968" stroke="#506680" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<text x="60" y="1078" font-size="16" fill="#506680">Input remains unchanged. Output is a proposed correction for human review.</text></g></svg>

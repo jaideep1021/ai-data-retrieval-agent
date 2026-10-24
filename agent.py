@@ -1,7 +1,17 @@
+"""Week 1 PEP retrieval baseline.
+
+Read the stages from top to bottom: discover, retrieve, extract, verify, report.
+Imports do not read credentials, contact services, or create output directories.
+Run ``python agent.py --help`` for options; see README.md for a first run.
+"""
 
 import argparse
 import csv
 import os
+import hashlib
+import json
+import sys
+import uuid
 from pathlib import Path
 from datetime import datetime, timezone
 from urllib.parse import urlsplit
@@ -18,7 +28,7 @@ from pydantic import BaseModel
 # 1. CONFIGURATION
 # ==================================================
 
-load_dotenv()
+__version__ = "0.1.0"
 
 MODEL = os.getenv(
     "GEMINI_MODEL",
@@ -40,10 +50,6 @@ VALID_FIELDS = {
     "created",
 }
 
-EVIDENCE_DIR.mkdir(
-    parents=True,
-    exist_ok=True
-)
 
 
 # ==================================================
@@ -51,6 +57,7 @@ EVIDENCE_DIR.mkdir(
 # ==================================================
 
 class Extraction(BaseModel):
+    """The model proposes a value and quote; deterministic checks decide acceptance."""
     value: str | None
     evidence_quote: str | None
 
@@ -60,12 +67,14 @@ class Extraction(BaseModel):
 # ==================================================
 
 def normalize(value):
+    """Compare values after whitespace folding and case folding."""
     return " ".join(
         str(value or "").split()
     ).casefold()
 
 
 def canonical_pep_url(pep_number):
+    """Construct the known PEP URL; this fallback is specific to python.org."""
     return (
         "https://peps.python.org/"
         f"pep-{pep_number:04d}/"
@@ -73,6 +82,7 @@ def canonical_pep_url(pep_number):
 
 
 def is_official_pep_url(url, pep_number):
+    """Reject lookalike domains, wrong protocols and unrelated PEP paths."""
     parsed = urlsplit(url)
 
     return (
@@ -95,6 +105,7 @@ def current_timestamp():
 # ==================================================
 
 def discover_source(pep_number, search_client):
+    """Search first; fall back to the canonical URL without trusting arbitrary links."""
 
     canonical_url = canonical_pep_url(
         pep_number
@@ -151,7 +162,7 @@ def discover_source(pep_number, search_client):
 
     except Exception as exc:
         search_issue = (
-            f"{type(exc).__name__}: {exc}"
+            f"{type(exc).__name__}: search failed; canonical fallback used"
         )
 
         print(
@@ -177,6 +188,9 @@ def discover_source(pep_number, search_client):
 # ==================================================
 
 def fetch_source(browser, url, pep_number):
+    """Capture visible text and always close the page, including on failures."""
+    if not is_official_pep_url(url, pep_number):
+        raise ValueError("Only the expected official HTTPS PEP URL is allowed")
 
     print(f"[FETCH] Opening {url}")
 
@@ -227,11 +241,13 @@ def fetch_source(browser, url, pep_number):
                 "Retrieved page contains no text"
             )
 
+        text_digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
         evidence_path = (
             EVIDENCE_DIR
-            / f"pep_{pep_number:04d}.txt"
+            / f"pep_{pep_number:04d}_{text_digest[:16]}.txt"
         )
 
+        EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
         evidence_path.write_text(
             text,
             encoding="utf-8"
@@ -349,6 +365,7 @@ WEBPAGE TEXT:
 # ==================================================
 
 def load_reference_data():
+    """Load the benchmark oracle once, not an independent corroborating source."""
 
     print(
         "[REFERENCE] Loading official PEP JSON"
@@ -390,6 +407,7 @@ def verify_extraction(
     original_value,
 ):
 
+    # Presence is a mechanical check, not proof of semantic support.
     value = (value or "").strip()
     quote = (evidence_quote or "").strip()
 
@@ -438,8 +456,9 @@ def process_record(
     ai_client,
 ):
 
-    pep = int(row["pep_number"])
-    attribute = row["attribute"].strip().lower()
+    # Parse inside the try block so a bad row cannot abort later records.
+    pep = row.get("pep_number", "") or ""
+    attribute = (row.get("attribute") or "").strip().lower()
 
     original_value = row.get(
         "current_value", ""
@@ -471,11 +490,18 @@ def process_record(
         "error_stage": "",
         "error": "",
         "checked_at": current_timestamp(),
+        "model": MODEL,
+        "baseline_version": __version__,
+        "evidence_sha256": "",
     }
 
     stage = "validation"
 
     try:
+        pep = int(pep)
+        if pep < 0:
+            raise ValueError("PEP number must be nonnegative")
+        result["pep_number"] = pep
         if attribute not in VALID_FIELDS:
             raise ValueError(
                 f"Unsupported attribute: {attribute}"
@@ -541,6 +567,9 @@ def process_record(
 
         result["source_url"] = final_url
         result["evidence_file"] = evidence_path
+        result["evidence_sha256"] = hashlib.sha256(
+            Path(evidence_path).read_bytes()
+        ).hexdigest()
 
         # --------------------------
         # STEP 3 - AI EXTRACTION
@@ -602,12 +631,12 @@ def process_record(
         result["decision"] = "ERROR"
         result["error_stage"] = stage
         result["error"] = (
-            f"{type(exc).__name__}: {exc}"
+            f"{type(exc).__name__}: {stage} failed; see README troubleshooting"
         )
 
         print(
             f"[ERROR] PEP {pep} "
-            f"at {stage}: {exc}"
+            f"at {stage}: {result['error']}"
         )
 
     return result
@@ -625,19 +654,14 @@ def save_results(results):
 
     fieldnames = list(results[0].keys())
 
-    with OUTPUT_FILE.open(
-        "w",
-        newline="",
-        encoding="utf-8",
-    ) as file:
-
-        writer = csv.DictWriter(
-            file,
-            fieldnames=fieldnames,
-        )
-
+    # Atomic replacement avoids a half-written CSV after an interrupted write.
+    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    temporary = OUTPUT_FILE.with_suffix(OUTPUT_FILE.suffix + ".tmp")
+    with temporary.open("w", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(results)
+    temporary.replace(OUTPUT_FILE)
 
     print(
         f"\n[OUTPUT] Results saved to "
@@ -714,7 +738,29 @@ def print_summary(results):
 # 12. MAIN EXECUTION
 # ==================================================
 
-def main():
+def read_records(path, pep_filter=None):
+    """Validate the CSV structure before spending any API credits."""
+    with path.open(newline="", encoding="utf-8-sig") as file:
+        reader = csv.DictReader(file)
+        required = {"pep_number", "attribute", "current_value"}
+        if not required.issubset(reader.fieldnames or []):
+            raise ValueError("CSV requires pep_number,attribute,current_value headers")
+        records = list(reader)
+    if pep_filter is not None:
+        def matches(row):
+            try:
+                return int(row.get("pep_number", "")) == pep_filter
+            except (TypeError, ValueError):
+                return False
+        records = [row for row in records if matches(row)]
+    if not records:
+        raise ValueError("No matching records found")
+    return records
+
+
+def main(argv=None):
+    global INPUT_FILE, OUTPUT_FILE, EVIDENCE_DIR, MODEL
+
 
     parser = argparse.ArgumentParser(
         description="PEP data retrieval agent"
@@ -726,34 +772,25 @@ def main():
         help="Run one PEP only (e.g. --pep 8)",
     )
 
-    args = parser.parse_args()
+    parser.add_argument("--version", action="version", version=__version__)
+    parser.add_argument("--input", type=Path, default=INPUT_FILE)
+    parser.add_argument("--output-dir", type=Path,
+                        help="New directory for this run (must not already exist)")
+    parser.add_argument("--env-file", type=Path, default=Path(".env"))
+    args = parser.parse_args(argv)
+    # Explicit path prevents accidentally loading a parent directory's .env.
+    load_dotenv(args.env_file, override=False)
+    MODEL = os.getenv("GEMINI_MODEL", MODEL)
+    INPUT_FILE = args.input
 
     if not INPUT_FILE.exists():
         raise FileNotFoundError(
             f"Missing input file: {INPUT_FILE}"
         )
 
-    # Load dataset
-    with INPUT_FILE.open(
-        newline="",
-        encoding="utf-8",
-    ) as file:
-
-        records = list(
-            csv.DictReader(file)
-        )
-
-    if args.pep is not None:
-        records = [
-            row for row in records
-            if int(row["pep_number"])
-            == args.pep
-        ]
-
-    if not records:
-        raise ValueError(
-            "No matching records found"
-        )
+    records = read_records(INPUT_FILE, args.pep)
+    if args.output_dir is not None and args.output_dir.exists():
+        raise FileExistsError("Choose a new output directory")
 
     # Validate API keys
     serpapi_key = os.getenv(
@@ -785,6 +822,25 @@ def main():
     )
 
     reference_data = load_reference_data()
+
+    # A new run directory preserves old results and their associated evidence.
+    run_dir = args.output_dir or Path("runs") / (
+        datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:8]
+    )
+    run_dir.mkdir(parents=True, exist_ok=False)
+    OUTPUT_FILE = run_dir / "results.csv"
+    EVIDENCE_DIR = run_dir / "evidence"
+    reference_path = run_dir / "reference.json"
+    reference_path.write_text(json.dumps(reference_data, indent=2), encoding="utf-8")
+    manifest = {
+        "version": __version__, "model": MODEL, "started_at": current_timestamp(),
+        "input_sha256": hashlib.sha256(INPUT_FILE.read_bytes()).hexdigest(),
+        "reference_url": REFERENCE_URL,
+        "reference_sha256": hashlib.sha256(reference_path.read_bytes()).hexdigest(),
+        "selected_pep": args.pep, "record_count": len(records),
+        "python": sys.version.split()[0],
+    }
+    (run_dir / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
     results = []
 
@@ -821,6 +877,7 @@ def main():
         save_results(results)
 
     print_summary(results)
+    return 1 if any(row["decision"] == "ERROR" for row in results) else 0
 
 
 # ==================================================
@@ -828,4 +885,10 @@ def main():
 # ==================================================
 
 if __name__ == "__main__":
-    main()
+    try:
+        raise SystemExit(main())
+    except Exception as exc:
+        # SDK exception strings may contain authenticated URLs: never log them.
+        print(f"Startup/run failed ({type(exc).__name__}). See README troubleshooting.",
+              file=sys.stderr)
+        raise SystemExit(1)
