@@ -1,0 +1,25 @@
+flowchart TD
+    A["records.csv<br/>PEP ID, attribute, original value"] --> B["Validate input and load PEP reference JSON"]
+    B --> C["SerpApi search"]
+    C --> D{"Official PEP result found?"}
+    D -->|Yes| E["Search result"]
+    D -->|No| F["Canonical URL fallback"]
+    E --> G["Playwright browser retrieval"]
+    F --> G
+    G --> H["Save evidence text"]
+    G --> I["Gemini Pydantic JSON extraction"]
+    H --> J["Check literal evidence in page"]
+    I --> J
+    B --> K["PEP API reference value"]
+    K --> L["Compare extracted vs reference"]
+    J --> M{"Both checks pass?"}
+    L --> M
+    M -->|Yes, changed| N["ACCEPT"]
+    M -->|Yes, unchanged| O["NO_CHANGE"]
+    M -->|No| P["REVIEW"]
+    G -.->|Failed stage| Q["ERROR"]
+    I -.->|Failed stage| Q
+    N --> R["results.csv + provenance"]
+    O --> R
+    P --> R
+    Q --> R
