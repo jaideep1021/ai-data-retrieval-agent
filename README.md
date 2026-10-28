@@ -2,6 +2,11 @@
 
 **v0.1.0 · Week 1 research baseline**
 
+An experimental automatic path is available in `autonomous.py`. It generates its
+own query and selects a source from search results, without a supplied source URL
+or reference answer. See [Deliverable 1 instructions and limitations](docs/autonomous-step1.md).
+The original `agent.py` and release tag `v0.1.0` remain unchanged.
+
 This Python program proposes corrections to a small CSV of Python Enhancement
 Proposal (PEP) metadata. It searches for the official page, opens it in a browser,
 asks Gemini for one value and a supporting quote, then checks that value against
