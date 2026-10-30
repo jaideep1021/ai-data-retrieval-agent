@@ -1,0 +1,139 @@
+{
+  "created_at": "2026-10-28T22:14:56.852663+00:00",
+  "seed": 20261028,
+  "reference_url": "https://peps.python.org/api/peps.json",
+  "reference_response_sha256": "6b58e7f88aaaf44aa112664efadf9dec10beea91abb3f04ab9f19ec78b39a4ef",
+  "eligible_count": 725,
+  "excluded_development_peps": [
+    8,
+    20,
+    257,
+    484,
+    572,
+    617,
+    695,
+    703
+  ],
+  "observations": [
+    {
+      "id": "obs-01",
+      "pep_number": 841,
+      "attribute": "title",
+      "expected": "Adding Frozen Syntax to Optimize Immutable Types"
+    },
+    {
+      "id": "obs-02",
+      "pep_number": 776,
+      "attribute": "status",
+      "expected": "Active"
+    },
+    {
+      "id": "obs-03",
+      "pep_number": 3156,
+      "attribute": "type",
+      "expected": "Standards Track"
+    },
+    {
+      "id": "obs-04",
+      "pep_number": 804,
+      "attribute": "created",
+      "expected": "03-Sep-2025"
+    },
+    {
+      "id": "obs-05",
+      "pep_number": 241,
+      "attribute": "title",
+      "expected": "Metadata for Python Software Packages"
+    },
+    {
+      "id": "obs-06",
+      "pep_number": 799,
+      "attribute": "status",
+      "expected": "Final"
+    },
+    {
+      "id": "obs-07",
+      "pep_number": 3151,
+      "attribute": "type",
+      "expected": "Standards Track"
+    },
+    {
+      "id": "obs-08",
+      "pep_number": 415,
+      "attribute": "created",
+      "expected": "26-Feb-2012"
+    },
+    {
+      "id": "obs-09",
+      "pep_number": 233,
+      "attribute": "title",
+      "expected": "Python Online Help"
+    },
+    {
+      "id": "obs-10",
+      "pep_number": 714,
+      "attribute": "status",
+      "expected": "Accepted"
+    },
+    {
+      "id": "obs-11",
+      "pep_number": 758,
+      "attribute": "type",
+      "expected": "Standards Track"
+    },
+    {
+      "id": "obs-12",
+      "pep_number": 342,
+      "attribute": "created",
+      "expected": "10-May-2005"
+    },
+    {
+      "id": "obs-13",
+      "pep_number": 467,
+      "attribute": "title",
+      "expected": "Minor API improvements for binary sequences"
+    },
+    {
+      "id": "obs-14",
+      "pep_number": 202,
+      "attribute": "status",
+      "expected": "Final"
+    },
+    {
+      "id": "obs-15",
+      "pep_number": 671,
+      "attribute": "type",
+      "expected": "Standards Track"
+    },
+    {
+      "id": "obs-16",
+      "pep_number": 436,
+      "attribute": "created",
+      "expected": "22-Feb-2013"
+    },
+    {
+      "id": "obs-17",
+      "pep_number": 818,
+      "attribute": "title",
+      "expected": "Adding the Core of the Pyodide Foreign Function Interface to Python"
+    },
+    {
+      "id": "obs-18",
+      "pep_number": 419,
+      "attribute": "status",
+      "expected": "Deferred"
+    },
+    {
+      "id": "obs-19",
+      "pep_number": 805,
+      "attribute": "type",
+      "expected": "Standards Track"
+    },
+    {
+      "id": "obs-20",
+      "pep_number": 3123,
+      "attribute": "created",
+      "expected": "27-Apr-2007"
+    }
+  ]
+}

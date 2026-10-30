@@ -6,8 +6,9 @@ later be counted as an untouched test observation.
 
 ## Preserved baseline
 
-The original `agent.py`, dependency pins, original tests and `VERSION` remain
-identical to `v0.1.0`. The newer README edit from GitHub was retained. Development
+At this milestone, the original `agent.py`, dependency pins, original tests and
+`VERSION` remained identical to `v0.1.0`. During Deliverable 5, only the package
+`VERSION` was advanced to `0.2.0-dev`; the baseline implementation stayed frozen. The newer README edit from GitHub was retained. Development
 is isolated on `feature/autonomous-search-step1`; no released tag was moved.
 
 ## Findings during development

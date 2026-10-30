@@ -1,11 +1,29 @@
 # Evidence-Grounded AI Data Retrieval Agent
 
-**v0.1.0 · Week 1 research baseline**
+**Week 2 package: v0.2.0 · preserved Week 1 baseline: v0.1.0**
 
-An experimental automatic path is available in `autonomous.py`. It generates its
-own query and selects a source from search results, without a supplied source URL
-or reference answer. See [Deliverable 1 instructions and limitations](docs/autonomous-step1.md).
-The original `agent.py` and release tag `v0.1.0` remain unchanged.
+Start with the [Week 2 report for Dr. Sibdari](docs/week2-report.md), then the
+[Week 2 reproduction guide](docs/week2-reproduction.md). The package contains the
+original PEP-specific pipeline and separate autonomous implementations, an
+actual 20-record/60-trial evaluation, and a prepared historical airline dataset.
+
+| Entry point | Purpose |
+|---|---|
+| `agent.py` | Original v0.1.0 PEP baseline, known-URL fallback and reference verification |
+| `autonomous.py` | Deliverable 1 single-source autonomous discovery |
+| `multisource.py` | Deliverable 2 multi-source comparison with SerpApi or Brave |
+| `evaluate.py` | Paired benchmark with pacing, usage records and explicit scoring |
+| `evaluation_report.py` | Rebuild readable benchmark tables from saved local runs |
+| `prepare_business_data.py` | Prepare/replay the public historical airline sample |
+
+No business-domain agent evaluation or price predictor is claimed. See the
+[release review](docs/release-review-v0.2.0.md) for the recorded validation checks.
+
+## Original Week 1 baseline guide
+
+The setup below checks out **v0.1.0 intentionally** and does not contain the Week 2
+files. To work with this local Week 2 checkout, use the separate reproduction guide
+above for the v0.2.0 setup commands.
 
 This Python program proposes corrections to a small CSV of Python Enhancement
 Proposal (PEP) metadata. It searches for the official page, opens it in a browser,
@@ -281,7 +299,7 @@ examples/                Reusable input examples, including invalid records
 .gitignore               Secrets, environments and generated-output exclusions
 requirements.in          Direct dependency pins
 requirements.txt         Complete dependency version pins
-VERSION                  0.1.0
+VERSION                  Package development version; agent.py retains baseline version
 CHANGELOG.md              Release history and compatibility notes
 CONTRIBUTING.md           Safe update/release workflow
 architecture.mmd         Editable diagram source
@@ -304,17 +322,17 @@ requests; this is not a sandbox for arbitrary user URLs. Temperature zero does n
 guarantee deterministic model output. Live services, page content and models can
 change despite pinned Python dependencies.
 
-- **v0.1.x:** fix reproducibility defects while retaining the four decision meanings.
-- **v0.2.0:** automatic robots checks, caching and rate limits;
-  compare deterministic metadata parsing with Gemini on labeled cases.
-- **v0.3.0:** independent evaluation, ambiguous entities and conflicting sources;
-  report correctness, abstention, latency and cost separately.
-- **Later:** human review workflow and broader sources only after measured validation.
+- **v0.1.0:** preserved specialized baseline and its original release tag.
+- **v0.2.0:** autonomous discovery, multi-source comparisons,
+  paired evaluation and public business-dataset preparation. See the Week 2 report.
+- **Proposed next work, subject to Dr. Sibdari's feedback:** better query recovery,
+  numeric/unit and market/period matching, structured-data retrieval and a fresh
+  business-domain evaluation. No prediction system or general truth verifier yet.
 
-These are plans, not implemented features. Use semantic versioning: patch for fixes,
-minor for compatible capabilities, major for incompatible interfaces. Tag releases
-and record dependency/model/data changes in the changelog. To resume development
-after checking out the release tag, use `git switch main`.
+Use semantic versioning for the package. Keep the original agent's version label
+at 0.1.0 while its implementation is frozen; development paths retain their recorded
+development labels so historical run manifests stay interpretable. Do not rewrite
+existing tags or benchmark results. See CONTRIBUTING.md for release practices.
 
 No open-source license has been chosen for the project code yet; public visibility
 does not establish broad reuse rights. Third-party data and dependencies retain
@@ -327,3 +345,32 @@ their respective terms. Discuss licensing before wider redistribution.
 - [Playwright browser installation](https://playwright.dev/python/docs/browsers)
 - [Gemini structured outputs](https://ai.google.dev/gemini-api/docs/structured-output)
 - [Robots Exclusion Protocol, RFC 9309](https://www.rfc-editor.org/rfc/rfc9309.html)
+
+### Deliverable 2: multi-source comparison
+
+`multisource.py` adds separate page extraction, agreement/conflict reporting,
+local evidence records, and selectable SerpApi/Brave search. SerpApi remains the
+default. See [setup, commands and limitations](docs/multisource-step2.md) and
+[actual test results and live findings](docs/multisource-step2-findings.md).
+Agreement does not establish truth or independent corroboration. Both providers have completed live smoke tests; observed title-format conflicts
+are documented in the findings. These capabilities are included in the combined v0.2.0 package.
+
+### Deliverable 3: evaluation
+
+Completed 20 distinct PEP observations across the baseline and two autonomous
+configurations (60 live trials). See the [interpretation and caveats](docs/evaluation-step3-review.md),
+[full findings](docs/evaluation-step3-findings.md), and
+[reproduction protocol](docs/evaluation-step3.md). Candidate accuracy was 100% for
+the specialized baseline, 5% for autonomous SerpApi and 90% for autonomous Brave.
+All baseline records used canonical fallback; Brave's accepted-correct rate was
+30%. These results do not establish general provider superiority. API costs are
+labelled pricing scenarios, not verified charges.
+
+### Deliverable 4: selected business dataset
+
+Selected **historical airline pricing** after comparing it with a country-level
+logistics dataset. Prepared 30 city-market pairs from the official DOT Consumer
+Airfare Report, 2024 Q4, plus separate task inputs, reference answers and provenance
+under `examples/business/`. See [dataset selection, definitions and reproduction](docs/business-dataset-step4.md).
+This is public aggregate historical data, not current ticket quotes. The sample
+reproduces offline; a business-domain agent evaluation has not yet been run.

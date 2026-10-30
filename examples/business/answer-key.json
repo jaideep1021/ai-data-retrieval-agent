@@ -1,0 +1,302 @@
+[
+  {
+    "record_id": "airfare-01",
+    "attribute": "fare",
+    "expected": "335.1734188",
+    "unit": "USD",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-02",
+    "attribute": "passengers",
+    "expected": "3108.913043",
+    "unit": "passenger trips/day",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-03",
+    "attribute": "nsmiles",
+    "expected": "1067",
+    "unit": "miles",
+    "absolute_tolerance": "0",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-04",
+    "attribute": "fare",
+    "expected": "304.2099461",
+    "unit": "USD",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-05",
+    "attribute": "passengers",
+    "expected": "518.2608696",
+    "unit": "passenger trips/day",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-06",
+    "attribute": "nsmiles",
+    "expected": "1715",
+    "unit": "miles",
+    "absolute_tolerance": "0",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-07",
+    "attribute": "fare",
+    "expected": "178.7251844",
+    "unit": "USD",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-08",
+    "attribute": "passengers",
+    "expected": "459.3478261",
+    "unit": "passenger trips/day",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-09",
+    "attribute": "nsmiles",
+    "expected": "2279",
+    "unit": "miles",
+    "absolute_tolerance": "0",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-10",
+    "attribute": "fare",
+    "expected": "348.6206528",
+    "unit": "USD",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-11",
+    "attribute": "passengers",
+    "expected": "283.4782609",
+    "unit": "passenger trips/day",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-12",
+    "attribute": "nsmiles",
+    "expected": "1465",
+    "unit": "miles",
+    "absolute_tolerance": "0",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-13",
+    "attribute": "fare",
+    "expected": "277.5587153",
+    "unit": "USD",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-14",
+    "attribute": "passengers",
+    "expected": "496.9565217",
+    "unit": "passenger trips/day",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-15",
+    "attribute": "nsmiles",
+    "expected": "782",
+    "unit": "miles",
+    "absolute_tolerance": "0",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-16",
+    "attribute": "fare",
+    "expected": "179.694279",
+    "unit": "USD",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-17",
+    "attribute": "passengers",
+    "expected": "929.2391304",
+    "unit": "passenger trips/day",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-18",
+    "attribute": "nsmiles",
+    "expected": "321",
+    "unit": "miles",
+    "absolute_tolerance": "0",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-19",
+    "attribute": "fare",
+    "expected": "298.5257705",
+    "unit": "USD",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-20",
+    "attribute": "passengers",
+    "expected": "338.5869565",
+    "unit": "passenger trips/day",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-21",
+    "attribute": "nsmiles",
+    "expected": "2086",
+    "unit": "miles",
+    "absolute_tolerance": "0",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-22",
+    "attribute": "fare",
+    "expected": "217.0755156",
+    "unit": "USD",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-23",
+    "attribute": "passengers",
+    "expected": "1774.565217",
+    "unit": "passenger trips/day",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-24",
+    "attribute": "nsmiles",
+    "expected": "1203",
+    "unit": "miles",
+    "absolute_tolerance": "0",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-25",
+    "attribute": "fare",
+    "expected": "231.6157122",
+    "unit": "USD",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-26",
+    "attribute": "passengers",
+    "expected": "1072.608696",
+    "unit": "passenger trips/day",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-27",
+    "attribute": "nsmiles",
+    "expected": "1119",
+    "unit": "miles",
+    "absolute_tolerance": "0",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-28",
+    "attribute": "fare",
+    "expected": "190.5230985",
+    "unit": "USD",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-29",
+    "attribute": "passengers",
+    "expected": "254.5652174",
+    "unit": "passenger trips/day",
+    "absolute_tolerance": "0.01",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  },
+  {
+    "record_id": "airfare-30",
+    "attribute": "nsmiles",
+    "expected": "464",
+    "unit": "miles",
+    "absolute_tolerance": "0",
+    "source_dataset": "4f3n-jbg2",
+    "year": 2024,
+    "quarter": 4
+  }
+]

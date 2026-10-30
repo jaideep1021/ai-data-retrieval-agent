@@ -1,0 +1,14 @@
+{
+  "records": 30,
+  "unique_city_pairs": 30,
+  "fare_usd_min": "152.986549",
+  "fare_usd_max": "401.5144172",
+  "distance_miles_min": "304",
+  "distance_miles_max": "2279",
+  "tasks_per_attribute": {
+    "fare": 10,
+    "passengers": 10,
+    "nsmiles": 10
+  },
+  "agent_evaluation_performed": false
+}

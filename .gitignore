@@ -6,6 +6,7 @@
 *.key
 # Local environments and caches
 .venv/
+.venv-*/
 venv/
 agent/
 __pycache__/
@@ -20,3 +21,12 @@ evidence/
 results*.csv
 *.log
 *.tmp
+# Original local prototype backups and private meeting screenshots
+local-backups/
+Screenshot*.png
+
+# Machine-specific editor/debug configuration (preserve locally)
+.vscode/
+
+# Local assistant workflow instructions
+/AGENTS.md
