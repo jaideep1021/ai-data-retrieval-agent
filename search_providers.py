@@ -2,7 +2,9 @@
 import requests
 
 
+# EXPLAIN: Define the structured fields accepted from the model; unexpected fields are rejected.
 class SearchProvider:
+    # EXPLAIN: Initialize this helper and store the dependencies supplied by its caller; this makes offline testing possible.
     def __init__(self, name, client=None, key=None):
         if name not in ('serpapi', 'brave'):
             raise ValueError('Unknown provider')
@@ -12,6 +14,7 @@ class SearchProvider:
             raise ValueError('Brave key required')
         self.name, self.client, self.key = name, client, key
 
+    # EXPLAIN: Call the configured search service and return discovery results. Search snippets are not verification evidence.
     def search(self, query):
         if self.name == 'serpapi':
             payload = self.client.search(engine='google', q=query, num=10)

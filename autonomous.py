@@ -30,17 +30,20 @@ MAX_BYTES = 2_000_000
 MAX_TEXT = 12000
 
 
+# EXPLAIN: Define the structured fields accepted from the model; unexpected fields are rejected.
 class QueryPlan(BaseModel):
     model_config = ConfigDict(extra="forbid")
     query: str = Field(min_length=1, max_length=240)
 
 
+# EXPLAIN: Define the structured fields accepted from the model; unexpected fields are rejected.
 class Selection(BaseModel):
     model_config = ConfigDict(extra="forbid")
     candidate_index: int | None
     reason: str = Field(max_length=600)
 
 
+# EXPLAIN: Define the structured fields accepted from the model; unexpected fields are rejected.
 class Claim(BaseModel):
     model_config = ConfigDict(extra="forbid")
     value: str | None
@@ -48,10 +51,12 @@ class Claim(BaseModel):
     entity_quote: str | None
 
 
+# EXPLAIN: Collapse whitespace and ignore letter case so formatting alone does not change a string comparison.
 def normalized(text):
     return " ".join((text or "").split()).casefold()
 
 
+# EXPLAIN: Reject supplied URLs and undiscovered domain restrictions; a retry may use domains actually seen in search results.
 def validate_query(query, discovered_domains=()):
     """First query is open; later domain terms must come from observed results."""
     if re.search(r"https?://|www\.", query, re.I):
@@ -64,6 +69,7 @@ def validate_query(query, discovered_domains=()):
     return query.strip()
 
 
+# EXPLAIN: Extract hostnames for query reformulation. This is not a list of trusted publishers.
 def discovered_domains(candidates):
     """Derive search terms, not a trust allowlist, from observed URL hostnames.
 
@@ -81,6 +87,7 @@ def discovered_domains(candidates):
     return sorted(domains)
 
 
+# EXPLAIN: Check HTTPS and public IP destinations before fetching; this is not a complete defense against DNS rebinding.
 def public_url(url):
     """Reject local/private destinations before each HTTP request and redirect.
 
@@ -97,8 +104,10 @@ def public_url(url):
     return urldefrag(url)[0]
 
 
+# EXPLAIN: Bounded static HTML retrieval; no browser scripts or subresources execute.
 class Retriever:
     """Bounded static HTML retrieval; no browser scripts or subresources execute."""
+    # EXPLAIN: Initialize this helper and store the dependencies supplied by its caller; this makes offline testing possible.
     def __init__(self, session=None):
         self.session = session or requests.Session()
         self.session.trust_env = False
@@ -106,6 +115,7 @@ class Retriever:
         self.robots = {}
         self.policy_events = []
 
+    # EXPLAIN: Download a bounded response, check redirects individually, and enforce robots policy before page access.
     def read(self, url, check_robots=True):
         for _ in range(4):
             url = public_url(url)
@@ -128,6 +138,7 @@ class Retriever:
                 return response.status_code, response.headers.get("Content-Type", ""), text, url
         raise ValueError("Too many redirects")
 
+    # EXPLAIN: Cache robots rules per site; block disallowed access or unsupported crawl scheduling.
     def check_policy(self, url):
         parsed = urlsplit(url)
         origin = f"{parsed.scheme}://{parsed.netloc}"
@@ -151,6 +162,7 @@ class Retriever:
             if parser.crawl_delay(USER_AGENT) or parser.request_rate(USER_AGENT):
                 raise ValueError("Site requires crawl scheduling not supported in step 1")
 
+    # EXPLAIN: Convert supported HTML or plain text into readable evidence; scripts are not executed.
     def fetch(self, url):
         status, content_type, html, final = self.read(url)
         if status != 200:
@@ -169,12 +181,15 @@ class Retriever:
         return text, final
 
 
+# EXPLAIN: Keep prompts and per-call usage auditable; never log raw SDK errors.
 class StructuredModel:
     """Keep prompts and per-call usage auditable; never log raw SDK errors."""
+    # EXPLAIN: Initialize this helper and store the dependencies supplied by its caller; this makes offline testing possible.
     def __init__(self, client, model):
         self.client, self.model = client, model
         self.calls = []
 
+    # EXPLAIN: Send one structured model request, validate its JSON against the schema, and record usage and elapsed time.
     def ask(self, stage, instruction, data, schema):
         record = {"stage": stage, "started_at": datetime.now(timezone.utc).isoformat()}
         self.calls.append(record)
@@ -205,6 +220,7 @@ class StructuredModel:
             record["seconds"] = round(time.perf_counter() - started, 3)
 
 
+# EXPLAIN: Check that value and entity quotations occur in supplied text. Literal grounding is not a truth guarantee.
 def supported_claim(claim, page_text, entity):
     """Mechanical grounding only: occurrence does not prove semantic truth."""
     value, quote, entity_quote = map(normalized, (claim.value, claim.evidence_quote, claim.entity_quote))
@@ -218,6 +234,7 @@ def supported_claim(claim, page_text, entity):
                 and entity_quote in page and entity_present)
 
 
+# EXPLAIN: A missing or rejected candidate can trigger one reformulation. Unsupported evidence abstains; exceptions record ERROR. The result is persisted even when execution fails.
 def run(entity, attribute, current_value, model, search, fetcher, output_dir):
     """At most two generated queries, one selected source; audit every outcome."""
     output_dir.mkdir(parents=True, exist_ok=False)
@@ -343,6 +360,7 @@ def run(entity, attribute, current_value, model, search, fetcher, output_dir):
         temporary.replace(output_dir / "result.json")
 
 
+# EXPLAIN: Read command-line options, check configuration, create dependencies, and dispatch the workflow. Keys stay in the environment.
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--entity", required=True)

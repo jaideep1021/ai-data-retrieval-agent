@@ -10,23 +10,50 @@ import sys
 
 import requests
 
+# Unique identifier for the U.S. DOT Consumer Airfare Report (Table 1: Top 1,000 Contiguous State City-Pair Markets)
 DATASET_ID = '4f3n-jbg2'
+
+# SODA (Socrata Open Data API) endpoint used to fetch data records in JSON format
 API = f'https://data.transportation.gov/resource/{DATASET_ID}.json'
+
+# Socrata Views API endpoint used to retrieve dataset metadata (column schemas, description, last updated date)
 METADATA = f'https://data.transportation.gov/api/views/{DATASET_ID}.json'
+
+# Filter and sampling parameters:
+# - Target time frame: Q4 2024
+# - SEED: Integer seed ensuring pseudo-random sampling is reproducible
+# - SAMPLE_SIZE: The number of city-market pair records to sample
 YEAR, QUARTER, SEED, SAMPLE_SIZE = 2024, 4, 20261028, 30
-FIELDS = ('year','quarter','citymarketid_1','citymarketid_2','city1','city2','nsmiles',
-          'passengers','fare','carrier_lg','large_ms','fare_lg','carrier_low','lf_ms','fare_low')
-NUMERIC = ('nsmiles','passengers','fare','large_ms','fare_lg','lf_ms','fare_low')
 
+# Specific columns/attributes to select from the dataset:
+# - year, quarter: Time period
+# - citymarketid_1, citymarketid_2: Unique IDs for the two city markets
+# - city1, city2: City names for the market pair
+# - nsmiles: Non-stop distance in miles
+# - passengers: Average daily passengers in the market
+# - fare: Overall average one-way fare
+# - carrier_lg, large_ms, fare_lg: Carrier with largest market share, its share as a fraction, and its average fare
+# - carrier_low, lf_ms, fare_low: Lowest-fare carrier, its market share as a fraction, and its average fare
+FIELDS = (
+    'year', 'quarter', 'citymarketid_1', 'citymarketid_2', 'city1', 'city2',
+    'nsmiles', 'passengers', 'fare', 'carrier_lg', 'large_ms', 'fare_lg',
+    'carrier_low', 'lf_ms', 'fare_low'
+)
 
+# Subset of FIELDS that contain numeric values; validated using Decimal; original strings are retained in outputs
+NUMERIC = ('nsmiles', 'passengers', 'fare', 'large_ms', 'fare_lg', 'lf_ms', 'fare_low')
+
+# EXPLAIN: Fingerprint bytes with SHA-256 so replay can detect changed evidence; a hash does not establish factual accuracy.
 def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
+# EXPLAIN: Write readable UTF-8 JSON while retaining the supplied values.
 def write_json(path, value):
     path.write_text(json.dumps(value,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
 
 
+# EXPLAIN: Reject malformed rows, wrong quarters, duplicate markets and invalid numeric values instead of silently dropping records.
 def validate(rows):
     """Fail closed on schema/period/unit anomalies rather than silently dropping rows."""
     if not isinstance(rows,list) or len(rows) < SAMPLE_SIZE or len(rows) >= 2000:
@@ -60,6 +87,7 @@ def validate(rows):
     return sorted(cleaned,key=lambda r:(int(r['citymarketid_1']),int(r['citymarketid_2'])))
 
 
+# EXPLAIN: Validate and sort the population, then use a fixed random seed to select the same 30 records on replay.
 def make_sample(rows):
     population=validate(rows)
     chosen=random.Random(SEED).sample(population,SAMPLE_SIZE)
@@ -67,6 +95,7 @@ def make_sample(rows):
     return [{'record_id':f'airfare-{i+1:02d}',**r} for i,r in enumerate(chosen)]
 
 
+# EXPLAIN: Fetch the fixed public dataset endpoint with a timeout and a five-megabyte response limit.
 def read_public(url, params=None):
     # Official public API, bounded response, timeout, no credential or auth required.
     with requests.get(url,params=params,timeout=(10,30),stream=True,allow_redirects=False) as response:
@@ -80,6 +109,7 @@ def read_public(url, params=None):
         return bytes(data),response.url
 
 
+# EXPLAIN: Download or replay public DOT data, create separate questions and reference answers, and save reproducibility metadata.
 def prepare(output, source=None):
     output=Path(output)
     if output.exists():

@@ -4,6 +4,24 @@
 **Prepared:** 29 October 2026
 **Package:** v0.2.0
 
+## How to explore the code and architecture
+
+Start with the [beginner code and architecture guide](week2-code-guide.md).
+The four task diagrams are displayed below and stored in `docs/walkthrough/`.
+Each task has an SVG image for immediate viewing and a Mermaid source file for editing.
+
+For the interactive explanation, download or clone the repository and double-click
+`docs/walkthrough/index.html`. No server, Python installation or API key is needed.
+Choose a task and use **Next step** or **Play explanation**. Each stage explains
+its input, operation and output. Selecting a function immediately opens its explanation
+and code. The page works offline and makes no API requests.
+
+[Interactive walkthrough file](walkthrough/index.html) — GitHub shows HTML source;
+open the downloaded file in a browser to use it. This is a teaching simulation,
+not an actual execution trace. It does not run the agent or demonstrate new results.
+The historical v0.2.0 tag preserves the evaluated source; these later comments and
+teaching assets do not change the original experiment results.
+
 ## Research objective
 
 Extend the successful Week 1 PEP retrieval prototype toward autonomous source
@@ -113,3 +131,29 @@ provenance are retained. No private transaction data is used.
 
 No business prediction model, business-domain retrieval evaluation, independent
 truth-verification guarantee or remote CI success is claimed.
+
+## Architecture diagrams for the four tasks
+
+### Task 1 Autonomous search
+
+![Autonomous search flow](walkthrough/task-1.svg)
+
+[View SVG](walkthrough/task-1.svg) · [Mermaid source](walkthrough/task-1.mmd)
+
+### Task 2 Multi source verification
+
+![Multi source verification flow](walkthrough/task-2.svg)
+
+[View SVG](walkthrough/task-2.svg) · [Mermaid source](walkthrough/task-2.mmd)
+
+### Task 3 Performance evaluation
+
+![Performance evaluation flow](walkthrough/task-3.svg)
+
+[View SVG](walkthrough/task-3.svg) · [Mermaid source](walkthrough/task-3.mmd)
+
+### Task 4 Business dataset preparation
+
+![Business dataset preparation flow](walkthrough/task-4.svg)
+
+[View SVG](walkthrough/task-4.svg) · [Mermaid source](walkthrough/task-4.mmd)

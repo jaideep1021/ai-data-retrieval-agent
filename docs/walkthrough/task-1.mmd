@@ -1,0 +1,12 @@
+flowchart TD
+  N0["CLI inputs"]
+  N1["Generate and validate query"]
+  N2["Search and select candidate"]
+  N3["Fetch page under robots rules"]
+  N4["Extract value and quotes"]
+  N5["Check grounding and save result"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+  N3 --> N4
+  N4 --> N5

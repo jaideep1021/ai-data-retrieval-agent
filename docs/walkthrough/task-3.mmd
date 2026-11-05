@@ -1,0 +1,12 @@
+flowchart TD
+  N0["Frozen benchmark"]
+  N1["Rotate three configurations"]
+  N2["Meter model calls and search"]
+  N3["Run pipeline without answer leakage"]
+  N4["Score against held out reference"]
+  N5["Aggregate accuracy time and cost"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+  N3 --> N4
+  N4 --> N5

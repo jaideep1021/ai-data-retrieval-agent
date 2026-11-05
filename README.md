@@ -1,5 +1,8 @@
 # Evidence-Grounded AI Data Retrieval Agent
 
+For a guided explanation of Week 2, start with the [code and architecture guide](docs/week2-code-guide.md) or the [weekly report with four task diagrams](docs/week2-report.md). Download the repository and open `docs/walkthrough/index.html` for the offline interactive walkthrough. No API key or installation is needed for this teaching page.
+
+
 **Week 2 package: v0.2.0 · preserved Week 1 baseline: v0.1.0**
 
 Start with the [Week 2 report for Dr. Sibdari](docs/week2-report.md), then the

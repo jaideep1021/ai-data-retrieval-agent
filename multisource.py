@@ -19,12 +19,14 @@ from autonomous import (Claim, MAX_TEXT, QueryPlan, Retriever, StructuredModel,
 from search_providers import SearchProvider
 
 
+# EXPLAIN: Define the structured fields accepted from the model; unexpected fields are rejected.
 class SourceSelection(BaseModel):
     model_config = ConfigDict(extra='forbid')
     candidate_indices: list[int] = Field(max_length=5)
     reason: str = Field(max_length=600)
 
 
+# EXPLAIN: Group grounded values. Different values conflict; fewer than two sources is insufficient; identical texts are duplicates. Otherwise record agreement, not verified truth.
 def compare(sources):
     """Compare grounded strings only. Agreement is not a truth or independence verdict."""
     grounded = [s for s in sources if s.get('status') == 'GROUNDED']
@@ -45,6 +47,7 @@ def compare(sources):
             'independence': 'NOT_ESTABLISHED', 'verified_truth': False}
 
 
+# EXPLAIN: At most two queries and a configured page-attempt budget. Conflict or agreement stops further searching; failed individual sources remain recorded. The result is persisted even when execution fails.
 def run(entity, attribute, model, providers, fetcher, output_dir, max_sources=3):
     if not entity.strip() or not attribute.strip() or not 2 <= max_sources <= 5 or not providers:
         raise ValueError('Nonempty inputs, providers and 2–5 sources required')
@@ -163,6 +166,7 @@ def run(entity, attribute, model, providers, fetcher, output_dir, max_sources=3)
     return result
 
 
+# EXPLAIN: Read command-line options, check configuration, create dependencies, and dispatch the workflow. Keys stay in the environment.
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--entity', required=True)

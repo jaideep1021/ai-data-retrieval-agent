@@ -7,6 +7,7 @@ from pathlib import Path
 from evaluate import summarize
 
 
+# EXPLAIN: Describe observable failure symptoms without claiming to know their underlying cause.
 def failure_labels(row, detail):
     labels=[]
     if row['decision']=='ERROR':
@@ -30,6 +31,7 @@ def failure_labels(row, detail):
     return sorted(set(labels))
 
 
+# EXPLAIN: Read saved trials and write reviewed metric tables and failure labels without making new API calls.
 def build(run_dir, output):
     rows=json.loads((run_dir/'observations.json').read_text())
     manifest=json.loads((run_dir/'manifest.json').read_text())

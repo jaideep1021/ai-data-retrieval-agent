@@ -25,6 +25,7 @@ from autonomous import Retriever, StructuredModel, normalized
 import multisource
 from search_providers import SearchProvider
 
+# EXPLAIN: Stop evaluation instead of repeatedly consuming quota-limited calls.
 class RateLimitStop(Exception):
     """Stop evaluation instead of repeatedly consuming quota-limited calls."""
 
@@ -32,12 +33,14 @@ class RateLimitStop(Exception):
 CONFIGS = ('baseline', 'autonomous_serpapi', 'autonomous_brave')
 
 
+# EXPLAIN: Write to a temporary file and replace the destination so readers do not see partially written JSON.
 def save(path, value):
     temporary = path.with_suffix('.tmp')
     temporary.write_text(json.dumps(value, indent=2), encoding='utf-8')
     temporary.replace(path)
 
 
+# EXPLAIN: Choose the first grounded candidate before comparing with the answer key. Track retrieval, correctness and acceptance separately.
 def score(config, result, expected):
     """First grounded candidate is fixed policy; never choose using the answer key."""
     if config == 'baseline':
@@ -60,12 +63,15 @@ def score(config, result, expected):
             'accepted_correct': bool(accepted and correct), 'decision': result.get('decision', 'ERROR')}
 
 
+# EXPLAIN: Forward unchanged SDK arguments; capture usage even for the frozen baseline.
 class MeteredModels:
     """Forward unchanged SDK arguments; capture usage even for the frozen baseline."""
+    # EXPLAIN: Initialize this helper and store the dependencies supplied by its caller; this makes offline testing possible.
     def __init__(self, models, pacing=None):
         self.models, self.calls = models, []
         self.pacing = pacing
 
+    # EXPLAIN: Forward the model request with pacing, record usage, and flag HTTP 429 so evaluation stops instead of spending more quota.
     def generate_content(self, **kwargs):
         if self.pacing is not None:
             if self.pacing['rate_limited']:
@@ -93,10 +99,13 @@ class MeteredModels:
             record['seconds'] = round(time.perf_counter() - start, 3)
 
 
+# EXPLAIN: Define the structured fields accepted from the model; unexpected fields are rejected.
 class MeteredSearch:
+    # EXPLAIN: Initialize this helper and store the dependencies supplied by its caller; this makes offline testing possible.
     def __init__(self, client):
         self.client, self.calls = client, []
 
+    # EXPLAIN: Call the configured search service and return discovery results. Search snippets are not verification evidence.
     def search(self, **kwargs):
         record = {'query': kwargs.get('q')}
         self.calls.append(record)
@@ -109,6 +118,7 @@ class MeteredSearch:
             raise
 
 
+# EXPLAIN: Convert recorded tokens and search attempts into a paid-tier scenario. Missing usage and unknown model rates remain visible; this is not an invoice.
 def usage_cost(calls, searches, provider, model):
     usages = [c['usage'] for c in calls if c.get('usage')]
     inp = sum(u.get('prompt_token_count') or 0 for u in usages)
@@ -125,6 +135,7 @@ def usage_cost(calls, searches, provider, model):
             'billing_verified': False, 'usage_complete': len(usages) == len(calls)}
 
 
+# EXPLAIN: Aggregate trials by configuration with explicit denominators; accepted precision is undefined when nothing is accepted.
 def summarize(rows):
     summary = {}
     for config in CONFIGS:
@@ -156,6 +167,7 @@ def summarize(rows):
     return summary
 
 
+# EXPLAIN: Freeze a seeded 20-observation PEP sample and its reference hash for later scoring.
 def prepare(output):
     if output.exists():
         raise ValueError('Benchmark already exists')
@@ -178,6 +190,7 @@ def prepare(output):
                   'observations':observations})
 
 
+# EXPLAIN: Run the frozen sample through three configurations in rotating order. References are provided only to the assisted baseline and post-run scoring.
 def execute(benchmark_path, output, interval=7):
     benchmark = json.loads(benchmark_path.read_text())
     output.mkdir(parents=True,exist_ok=False)
@@ -254,6 +267,7 @@ def execute(benchmark_path, output, interval=7):
         client.close()
 
 
+# EXPLAIN: Read command-line options, check configuration, create dependencies, and dispatch the workflow. Keys stay in the environment.
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action',choices=['prepare','run','summarize'])
