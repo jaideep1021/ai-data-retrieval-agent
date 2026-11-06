@@ -3,7 +3,7 @@
 For a guided explanation of Week 2, start with the [code and architecture guide](docs/week2-code-guide.md) or the [weekly report with four task diagrams](docs/week2-report.md). Download the repository and open `docs/walkthrough/index.html` for the offline interactive walkthrough. No API key or installation is needed for this teaching page.
 
 
-**Week 2 package: v0.2.0 · preserved Week 1 baseline: v0.1.0**
+**Week 3 package: v0.3.0 · preserved releases: v0.2.0 and v0.1.0**
 
 Start with the [Week 2 report for Dr. Sibdari](docs/week2-report.md), then the
 [Week 2 reproduction guide](docs/week2-reproduction.md). The package contains the
@@ -19,7 +19,7 @@ actual 20-record/60-trial evaluation, and a prepared historical airline dataset.
 | `evaluation_report.py` | Rebuild readable benchmark tables from saved local runs |
 | `prepare_business_data.py` | Prepare/replay the public historical airline sample |
 
-No business-domain agent evaluation or price predictor is claimed. See the
+The v0.2.0 release did not include a business-domain agent evaluation or price predictor. See the
 [release review](docs/release-review-v0.2.0.md) for the recorded validation checks.
 
 ## Original Week 1 baseline guide
@@ -376,4 +376,46 @@ logistics dataset. Prepared 30 city-market pairs from the official DOT Consumer
 Airfare Report, 2024 Q4, plus separate task inputs, reference answers and provenance
 under `examples/business/`. See [dataset selection, definitions and reproduction](docs/business-dataset-step4.md).
 This is public aggregate historical data, not current ticket quotes. The sample
-reproduces offline; a business-domain agent evaluation has not yet been run.
+reproduces offline. Week 3 evaluation results are linked below.
+
+## Week 3 experimental DOT pipeline
+
+The approved 30-observation sample is prepared for business-data evaluation.
+Development used six observations; a subsequent frozen evaluation tested the other 24.
+See the [experiment protocol](docs/week3-experiment-protocol.md),
+[first pilot findings](docs/week3-dot-pilot.md), and
+[retrieval repair and repeated pilot](docs/week3-retrieval-repair.md).
+Start with the [completed structured retrieval findings](docs/week3-structured-findings.md)
+and [method, verification rules and reproduction commands](docs/week3-structured-retrieval.md).
+These Week 3 experiments are included in v0.3.0.
+
+For the Week 3 reader and the complete current test suite, install the additional
+pinned PDF dependency in the same environment:
+
+```sh
+python -m pip install -r requirements-business.txt
+python -m unittest discover -s tests
+python evaluate_business.py check
+```
+
+The check command makes no API calls. Live pilot commands and their budgets are
+in the repair guide. Raw source documents, evidence and private correspondence
+remain in ignored `runs/`. The original version tags and baseline commands remain
+available.
+
+For a single DOT record using the additional public retrieval service (no API key):
+
+```sh
+python retrieve_record.py --record-id airfare-01 --provider socrata
+```
+
+This command makes live requests and saves private evidence. It uses a declared
+DOT schema and automatic template queries; it does not use Gemini.
+
+Week 3 follow-up: [technical task status and meeting explanation](docs/week3-technical-task-status.md)
+and [case-by-case Week 2 rejection audit](docs/week3-rejection-audit.md).
+
+For the combined Week 3 research update, read the [short report](docs/week3-report.md)
+or [Word report](docs/week3-report.docx), followed by the
+[corrected literature review](docs/week3-literature-review.md) and
+[proposed decision experiment](docs/week3-decision-experiment-plan.md).

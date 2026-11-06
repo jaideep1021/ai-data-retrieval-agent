@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.0 — Week 3 research — 2026-11-06
+
+- Added blinded DOT task inputs, separate scoring, bounded business-page/PDF retrieval
+  and preserved failed pilot findings.
+- Added structured DOT discovery through SerpApi, Brave and the Socrata catalog,
+  publisher/context verification and duplicate-evidence comparison.
+- Completed 18 development and 72 frozen held-out trials; prepared sanitized
+  results and method limitations in the Week 3 findings.
+- Added offline failure-path tests and pinned PDF-reader dependency.
+- Added corrected initial literature synthesis, a three-page combined research
+  report and a proposed cost-aware decision experiment; existing release tags
+  are unchanged.
+
 ## 0.2.0 — 2026-10-29
 
 Combines autonomous search, multi-source comparisons, measured evaluation and

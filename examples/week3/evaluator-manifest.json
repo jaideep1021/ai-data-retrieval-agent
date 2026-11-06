@@ -1,0 +1,311 @@
+{
+  "status": "proposed protocol; no live trials",
+  "dataset_approval": "User confirmed professor approval on 2026-11-05",
+  "cases": [
+    {
+      "record_id": "airfare-01",
+      "split": "development",
+      "condition": "missing",
+      "attribute": "fare",
+      "expected": "335.1734188",
+      "absolute_tolerance": "0.01",
+      "unit": "USD",
+      "decoy_source_record": null
+    },
+    {
+      "record_id": "airfare-02",
+      "split": "development",
+      "condition": "missing",
+      "attribute": "passengers",
+      "expected": "3108.913043",
+      "absolute_tolerance": "0.01",
+      "unit": "passenger trips/day",
+      "decoy_source_record": null
+    },
+    {
+      "record_id": "airfare-03",
+      "split": "development",
+      "condition": "missing",
+      "attribute": "nsmiles",
+      "expected": "1067",
+      "absolute_tolerance": "0",
+      "unit": "miles",
+      "decoy_source_record": null
+    },
+    {
+      "record_id": "airfare-04",
+      "split": "development",
+      "condition": "questionable",
+      "attribute": "fare",
+      "expected": "304.2099461",
+      "absolute_tolerance": "0.01",
+      "unit": "USD",
+      "decoy_source_record": "airfare-01"
+    },
+    {
+      "record_id": "airfare-05",
+      "split": "development",
+      "condition": "questionable",
+      "attribute": "passengers",
+      "expected": "518.2608696",
+      "absolute_tolerance": "0.01",
+      "unit": "passenger trips/day",
+      "decoy_source_record": "airfare-02"
+    },
+    {
+      "record_id": "airfare-06",
+      "split": "development",
+      "condition": "questionable",
+      "attribute": "nsmiles",
+      "expected": "1715",
+      "absolute_tolerance": "0",
+      "unit": "miles",
+      "decoy_source_record": "airfare-03"
+    },
+    {
+      "record_id": "airfare-07",
+      "split": "evaluation",
+      "condition": "missing",
+      "attribute": "fare",
+      "expected": "178.7251844",
+      "absolute_tolerance": "0.01",
+      "unit": "USD",
+      "decoy_source_record": null
+    },
+    {
+      "record_id": "airfare-08",
+      "split": "evaluation",
+      "condition": "missing",
+      "attribute": "passengers",
+      "expected": "459.3478261",
+      "absolute_tolerance": "0.01",
+      "unit": "passenger trips/day",
+      "decoy_source_record": null
+    },
+    {
+      "record_id": "airfare-09",
+      "split": "evaluation",
+      "condition": "missing",
+      "attribute": "nsmiles",
+      "expected": "2279",
+      "absolute_tolerance": "0",
+      "unit": "miles",
+      "decoy_source_record": null
+    },
+    {
+      "record_id": "airfare-10",
+      "split": "evaluation",
+      "condition": "questionable",
+      "attribute": "fare",
+      "expected": "348.6206528",
+      "absolute_tolerance": "0.01",
+      "unit": "USD",
+      "decoy_source_record": "airfare-04"
+    },
+    {
+      "record_id": "airfare-11",
+      "split": "evaluation",
+      "condition": "questionable",
+      "attribute": "passengers",
+      "expected": "283.4782609",
+      "absolute_tolerance": "0.01",
+      "unit": "passenger trips/day",
+      "decoy_source_record": "airfare-05"
+    },
+    {
+      "record_id": "airfare-12",
+      "split": "evaluation",
+      "condition": "questionable",
+      "attribute": "nsmiles",
+      "expected": "1465",
+      "absolute_tolerance": "0",
+      "unit": "miles",
+      "decoy_source_record": "airfare-06"
+    },
+    {
+      "record_id": "airfare-13",
+      "split": "evaluation",
+      "condition": "missing",
+      "attribute": "fare",
+      "expected": "277.5587153",
+      "absolute_tolerance": "0.01",
+      "unit": "USD",
+      "decoy_source_record": null
+    },
+    {
+      "record_id": "airfare-14",
+      "split": "evaluation",
+      "condition": "missing",
+      "attribute": "passengers",
+      "expected": "496.9565217",
+      "absolute_tolerance": "0.01",
+      "unit": "passenger trips/day",
+      "decoy_source_record": null
+    },
+    {
+      "record_id": "airfare-15",
+      "split": "evaluation",
+      "condition": "missing",
+      "attribute": "nsmiles",
+      "expected": "782",
+      "absolute_tolerance": "0",
+      "unit": "miles",
+      "decoy_source_record": null
+    },
+    {
+      "record_id": "airfare-16",
+      "split": "evaluation",
+      "condition": "questionable",
+      "attribute": "fare",
+      "expected": "179.694279",
+      "absolute_tolerance": "0.01",
+      "unit": "USD",
+      "decoy_source_record": "airfare-07"
+    },
+    {
+      "record_id": "airfare-17",
+      "split": "evaluation",
+      "condition": "questionable",
+      "attribute": "passengers",
+      "expected": "929.2391304",
+      "absolute_tolerance": "0.01",
+      "unit": "passenger trips/day",
+      "decoy_source_record": "airfare-08"
+    },
+    {
+      "record_id": "airfare-18",
+      "split": "evaluation",
+      "condition": "questionable",
+      "attribute": "nsmiles",
+      "expected": "321",
+      "absolute_tolerance": "0",
+      "unit": "miles",
+      "decoy_source_record": "airfare-09"
+    },
+    {
+      "record_id": "airfare-19",
+      "split": "evaluation",
+      "condition": "missing",
+      "attribute": "fare",
+      "expected": "298.5257705",
+      "absolute_tolerance": "0.01",
+      "unit": "USD",
+      "decoy_source_record": null
+    },
+    {
+      "record_id": "airfare-20",
+      "split": "evaluation",
+      "condition": "missing",
+      "attribute": "passengers",
+      "expected": "338.5869565",
+      "absolute_tolerance": "0.01",
+      "unit": "passenger trips/day",
+      "decoy_source_record": null
+    },
+    {
+      "record_id": "airfare-21",
+      "split": "evaluation",
+      "condition": "missing",
+      "attribute": "nsmiles",
+      "expected": "2086",
+      "absolute_tolerance": "0",
+      "unit": "miles",
+      "decoy_source_record": null
+    },
+    {
+      "record_id": "airfare-22",
+      "split": "evaluation",
+      "condition": "questionable",
+      "attribute": "fare",
+      "expected": "217.0755156",
+      "absolute_tolerance": "0.01",
+      "unit": "USD",
+      "decoy_source_record": "airfare-10"
+    },
+    {
+      "record_id": "airfare-23",
+      "split": "evaluation",
+      "condition": "questionable",
+      "attribute": "passengers",
+      "expected": "1774.565217",
+      "absolute_tolerance": "0.01",
+      "unit": "passenger trips/day",
+      "decoy_source_record": "airfare-11"
+    },
+    {
+      "record_id": "airfare-24",
+      "split": "evaluation",
+      "condition": "questionable",
+      "attribute": "nsmiles",
+      "expected": "1203",
+      "absolute_tolerance": "0",
+      "unit": "miles",
+      "decoy_source_record": "airfare-12"
+    },
+    {
+      "record_id": "airfare-25",
+      "split": "evaluation",
+      "condition": "missing",
+      "attribute": "fare",
+      "expected": "231.6157122",
+      "absolute_tolerance": "0.01",
+      "unit": "USD",
+      "decoy_source_record": null
+    },
+    {
+      "record_id": "airfare-26",
+      "split": "evaluation",
+      "condition": "missing",
+      "attribute": "passengers",
+      "expected": "1072.608696",
+      "absolute_tolerance": "0.01",
+      "unit": "passenger trips/day",
+      "decoy_source_record": null
+    },
+    {
+      "record_id": "airfare-27",
+      "split": "evaluation",
+      "condition": "missing",
+      "attribute": "nsmiles",
+      "expected": "1119",
+      "absolute_tolerance": "0",
+      "unit": "miles",
+      "decoy_source_record": null
+    },
+    {
+      "record_id": "airfare-28",
+      "split": "evaluation",
+      "condition": "questionable",
+      "attribute": "fare",
+      "expected": "190.5230985",
+      "absolute_tolerance": "0.01",
+      "unit": "USD",
+      "decoy_source_record": "airfare-13"
+    },
+    {
+      "record_id": "airfare-29",
+      "split": "evaluation",
+      "condition": "questionable",
+      "attribute": "passengers",
+      "expected": "254.5652174",
+      "absolute_tolerance": "0.01",
+      "unit": "passenger trips/day",
+      "decoy_source_record": "airfare-14"
+    },
+    {
+      "record_id": "airfare-30",
+      "split": "evaluation",
+      "condition": "questionable",
+      "attribute": "nsmiles",
+      "expected": "464",
+      "absolute_tolerance": "0",
+      "unit": "miles",
+      "decoy_source_record": "airfare-15"
+    }
+  ],
+  "source_hashes": {
+    "sample.json": "efa3bfe834ef1e28e212d6793360740030578382e80031397f4d00a583e75eda",
+    "task-inputs.json": "9ed411754f7c191e36438a8907dc47ef64b94d8bf60a2a86596ba0bf33a1afec",
+    "answer-key.json": "c1f06e760783063b6664a547e819a8789ceda4f81eed371bb7850085ecb87277"
+  }
+}

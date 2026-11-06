@@ -2,6 +2,13 @@
 import requests
 
 
+class SearchServiceError(ValueError):
+    """Safe status metadata lets batch runners stop on auth/quota failures."""
+    def __init__(self, status=None):
+        super().__init__('Search provider reported an error')
+        self.status = status
+
+
 # EXPLAIN: Define the structured fields accepted from the model; unexpected fields are rejected.
 class SearchProvider:
     # EXPLAIN: Initialize this helper and store the dependencies supplied by its caller; this makes offline testing possible.
@@ -19,7 +26,9 @@ class SearchProvider:
         if self.name == 'serpapi':
             payload = self.client.search(engine='google', q=query, num=10)
             if 'error' in payload:
-                raise ValueError('Search provider reported an error')
+                # The SDK may return errors without an HTTP status. Fail closed:
+                # the Week 3 runner stops instead of repeatedly spending quota.
+                raise SearchServiceError()
             rows = payload.get('organic_results', [])
             url_field, snippet_field = 'link', 'snippet'
         else:
@@ -29,7 +38,7 @@ class SearchProvider:
                               params={'q': query, 'count': 10}, timeout=(10, 25),
                               allow_redirects=False) as response:
                 if response.status_code != 200:
-                    raise ValueError('Search provider returned a non-success status')
+                    raise SearchServiceError(response.status_code)
                 payload = response.json()
             rows = payload.get('web', {}).get('results', [])
             url_field, snippet_field = 'url', 'description'

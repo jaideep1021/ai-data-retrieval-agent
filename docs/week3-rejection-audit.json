@@ -1,0 +1,717 @@
+{
+  "method": "Offline audit; original candidate scores and decisions unchanged",
+  "source_run": "evaluation-deliverable3-paced-20261028",
+  "original_report_sha256": "357d6ca8ccbd4cbb57da724d802c2581718674e7fef2dfe302ed56412549ab00",
+  "autonomous_trials": 40,
+  "correct_not_accepted": 13,
+  "rejection_reasons": {
+    "ONE_USABLE_GROUNDED_SOURCE": 12,
+    "TITLE_PREFIX_CONFLICT_MANUALLY_REVIEWED": 1
+  },
+  "verified_evidence_files": 35,
+  "cases": [
+    {
+      "id": "obs-01",
+      "pep_number": 841,
+      "attribute": "title",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "ERROR",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-01-autonomous_serpapi",
+      "result_sha256": "5270610ad7ff79fc1f9e915cc0ed4bee62f0f5b0d6743d98d08affec97a424d8"
+    },
+    {
+      "id": "obs-01",
+      "pep_number": 841,
+      "attribute": "title",
+      "provider": "autonomous_brave",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "CANDIDATE_DIFFERS_UNDER_ORIGINAL_SCORING",
+      "grounded_sources": 1,
+      "source_statuses": {
+        "GROUNDED": 1
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-0841/"
+      ],
+      "artifact": "obs-01-autonomous_brave",
+      "result_sha256": "1b0d95bf8f5f11b1b0bfd1c32b3b0c09b8dfb80dc95c89324b0ff7d1cda47de4"
+    },
+    {
+      "id": "obs-02",
+      "pep_number": 776,
+      "attribute": "status",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "ERROR",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-02-autonomous_serpapi",
+      "result_sha256": "5bf0c9139c6598d332359d7ed72e50225fd32a46928a62a827729e2f1baf9bf5"
+    },
+    {
+      "id": "obs-02",
+      "pep_number": 776,
+      "attribute": "status",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "ONE_USABLE_GROUNDED_SOURCE",
+      "grounded_sources": 1,
+      "source_statuses": {
+        "GROUNDED": 1,
+        "UNSUPPORTED": 1
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-0776/"
+      ],
+      "artifact": "obs-02-autonomous_brave",
+      "result_sha256": "ea0edbf737402d6dcf0cf39f97e9922d1de3c4344d20b30804eb2602e11f89b2"
+    },
+    {
+      "id": "obs-03",
+      "pep_number": 3156,
+      "attribute": "type",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": true,
+      "decision": "AGREEMENT_OBSERVED",
+      "reason": "ACCEPTED",
+      "grounded_sources": 3,
+      "source_statuses": {
+        "GROUNDED": 3
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-3156/",
+        "https://peps.pythondiscord.com/pep-3156/",
+        "https://legacy.python.org/dev/peps/pep-3156/"
+      ],
+      "artifact": "obs-03-autonomous_brave",
+      "result_sha256": "d15d990b3cb046065a4faf810a4a1903dbdbc6db88f1ef6525680c44fa5c49f9"
+    },
+    {
+      "id": "obs-03",
+      "pep_number": 3156,
+      "attribute": "type",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": true,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "ONE_USABLE_GROUNDED_SOURCE",
+      "grounded_sources": 1,
+      "source_statuses": {
+        "GROUNDED": 1
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-3156/"
+      ],
+      "artifact": "obs-03-autonomous_serpapi",
+      "result_sha256": "08fe61dc44877bb721a9c7548cb6968fccd84d0d08507ddb0beba7526577484e"
+    },
+    {
+      "id": "obs-04",
+      "pep_number": 804,
+      "attribute": "created",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "ERROR",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-04-autonomous_serpapi",
+      "result_sha256": "ccb83fc7b94f9384492832871823749b8c81a2a499a64f23ac7eea9d0b084def"
+    },
+    {
+      "id": "obs-04",
+      "pep_number": 804,
+      "attribute": "created",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "ONE_USABLE_GROUNDED_SOURCE",
+      "grounded_sources": 1,
+      "source_statuses": {
+        "GROUNDED": 1
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-0804/"
+      ],
+      "artifact": "obs-04-autonomous_brave",
+      "result_sha256": "9308e36cd0906345a422eaa14fafa3f9cac8622fab2ce20885b3b4a1be601ff4"
+    },
+    {
+      "id": "obs-05",
+      "pep_number": 241,
+      "attribute": "title",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "ERROR",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-05-autonomous_serpapi",
+      "result_sha256": "f925fcf57f28bad1f8b9b51f8abe0b200d80c5df3d997b42ccf50006fb1178fb"
+    },
+    {
+      "id": "obs-05",
+      "pep_number": 241,
+      "attribute": "title",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": true,
+      "decision": "AGREEMENT_OBSERVED",
+      "reason": "ACCEPTED",
+      "grounded_sources": 3,
+      "source_statuses": {
+        "GROUNDED": 3
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-0241/",
+        "https://peps.pythondiscord.com/pep-0241/",
+        "https://github.com/python/peps/blob/main/peps/pep-0241.rst"
+      ],
+      "artifact": "obs-05-autonomous_brave",
+      "result_sha256": "5192f387c36376ebf87cdf3a24c96e1051bc8365fdde4ac1ed48c8375ec66396"
+    },
+    {
+      "id": "obs-06",
+      "pep_number": 799,
+      "attribute": "status",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "ONE_USABLE_GROUNDED_SOURCE",
+      "grounded_sources": 1,
+      "source_statuses": {
+        "GROUNDED": 1
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-0799/"
+      ],
+      "artifact": "obs-06-autonomous_brave",
+      "result_sha256": "287b7165af5dbd8825100e26ae9c123117ceff4e6515a5fa3621780054731c8a"
+    },
+    {
+      "id": "obs-06",
+      "pep_number": 799,
+      "attribute": "status",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-06-autonomous_serpapi",
+      "result_sha256": "78b4287b3e382f70914770dbcf850b2984596802cdab98691cf58395c680384b"
+    },
+    {
+      "id": "obs-07",
+      "pep_number": 3151,
+      "attribute": "type",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-07-autonomous_serpapi",
+      "result_sha256": "d37a8d3b8dd396d0e2a1a238c54303ff438481a11f89eaa72af2f436c554ddb2"
+    },
+    {
+      "id": "obs-07",
+      "pep_number": 3151,
+      "attribute": "type",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": true,
+      "decision": "AGREEMENT_OBSERVED",
+      "reason": "ACCEPTED",
+      "grounded_sources": 2,
+      "source_statuses": {
+        "GROUNDED": 2,
+        "ERROR": 1
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-3151/",
+        "https://peps.pythondiscord.com/pep-3151/"
+      ],
+      "artifact": "obs-07-autonomous_brave",
+      "result_sha256": "7341605f458d2c744021a115acc42a25048195ca0bbc6fe657d2b56a1a4561ad"
+    },
+    {
+      "id": "obs-08",
+      "pep_number": 415,
+      "attribute": "created",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-08-autonomous_serpapi",
+      "result_sha256": "88874f94a63ec065e3a9c3d91c4795f8d7f3808745844f1f873c5581ff7dc237"
+    },
+    {
+      "id": "obs-08",
+      "pep_number": 415,
+      "attribute": "created",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": true,
+      "decision": "AGREEMENT_OBSERVED",
+      "reason": "ACCEPTED",
+      "grounded_sources": 2,
+      "source_statuses": {
+        "GROUNDED": 2
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-0415/",
+        "https://github.com/python/peps/blob/main/peps/pep-0415.rst"
+      ],
+      "artifact": "obs-08-autonomous_brave",
+      "result_sha256": "c59078d86cf9926e981f8950c28a8f367c5533e5b72c28b2ee6ddb8085b8ced4"
+    },
+    {
+      "id": "obs-09",
+      "pep_number": 233,
+      "attribute": "title",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "ONE_USABLE_GROUNDED_SOURCE",
+      "grounded_sources": 1,
+      "source_statuses": {
+        "GROUNDED": 1,
+        "DUPLICATE_URL": 1
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-0233/"
+      ],
+      "artifact": "obs-09-autonomous_brave",
+      "result_sha256": "48c4bdd15deb4103ebf8e71a425d8dc40c8eb66fae463d0e9529c810db5b00f7"
+    },
+    {
+      "id": "obs-09",
+      "pep_number": 233,
+      "attribute": "title",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "ERROR",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-09-autonomous_serpapi",
+      "result_sha256": "669fd732d4613d49a31a4a8bdfda0a2e6a5ed7c56bae45ec54cd2fee1eebd386"
+    },
+    {
+      "id": "obs-10",
+      "pep_number": 714,
+      "attribute": "status",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-10-autonomous_serpapi",
+      "result_sha256": "60a26db0d22d8099196731f127c32ff886f79f19ba318a526d41addef9359282"
+    },
+    {
+      "id": "obs-10",
+      "pep_number": 714,
+      "attribute": "status",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "ONE_USABLE_GROUNDED_SOURCE",
+      "grounded_sources": 1,
+      "source_statuses": {
+        "GROUNDED": 1
+      },
+      "grounded_source_urls": [
+        "https://github.com/python/peps/blob/main/peps/pep-0714.rst?plain=1"
+      ],
+      "artifact": "obs-10-autonomous_brave",
+      "result_sha256": "009c6a306b858b42b9c991bf32a71eef65fbf6e4894561b01aae27da4e20ca88"
+    },
+    {
+      "id": "obs-11",
+      "pep_number": 758,
+      "attribute": "type",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "ERROR",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-11-autonomous_serpapi",
+      "result_sha256": "e950b87432c0938a7ddc853cf00d52129424f74d198ec79b137e217308a2880f"
+    },
+    {
+      "id": "obs-11",
+      "pep_number": 758,
+      "attribute": "type",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "ONE_USABLE_GROUNDED_SOURCE",
+      "grounded_sources": 1,
+      "source_statuses": {
+        "GROUNDED": 1,
+        "UNSUPPORTED": 1
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-0758/"
+      ],
+      "artifact": "obs-11-autonomous_brave",
+      "result_sha256": "51f7b6b188a2d338a34045e85af6a975158829331195a543f71200b6fedcbb88"
+    },
+    {
+      "id": "obs-12",
+      "pep_number": 342,
+      "attribute": "created",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "ONE_USABLE_GROUNDED_SOURCE",
+      "grounded_sources": 1,
+      "source_statuses": {
+        "GROUNDED": 1,
+        "UNSUPPORTED": 1,
+        "ERROR": 1
+      },
+      "grounded_source_urls": [
+        "https://github.com/python/peps/blob/main/peps/pep-0342.rst"
+      ],
+      "artifact": "obs-12-autonomous_brave",
+      "result_sha256": "bab402f9854ba521710f872960b5e9a5d02f7d92ff53899bef1274fe8ddaa4c2"
+    },
+    {
+      "id": "obs-12",
+      "pep_number": 342,
+      "attribute": "created",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-12-autonomous_serpapi",
+      "result_sha256": "f3aea478e2f6e2320cdf309db2ed43f36b0ddc45dbd8d0e1765bc7c11902f7ac"
+    },
+    {
+      "id": "obs-13",
+      "pep_number": 467,
+      "attribute": "title",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-13-autonomous_serpapi",
+      "result_sha256": "2a2008d5fa02f4740301e83361cf92ebc326d61364a39ae81908e02dc051d5cf"
+    },
+    {
+      "id": "obs-13",
+      "pep_number": 467,
+      "attribute": "title",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": false,
+      "decision": "CONFLICT",
+      "reason": "TITLE_PREFIX_CONFLICT_MANUALLY_REVIEWED",
+      "grounded_sources": 2,
+      "source_statuses": {
+        "GROUNDED": 2,
+        "DUPLICATE_URL": 1
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-0467/",
+        "https://discuss.python.org/t/pep-467-minor-api-improvements-for-binary-sequences/42001"
+      ],
+      "artifact": "obs-13-autonomous_brave",
+      "result_sha256": "41665311f08da8fb060fe22b5778d2109b7c9a05a8d47074f16a341981ca2ff6"
+    },
+    {
+      "id": "obs-14",
+      "pep_number": 202,
+      "attribute": "status",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-14-autonomous_serpapi",
+      "result_sha256": "9cfec380c510d00ce57bb436c8b9c0957e08a63b96316623e5925f090428dff9"
+    },
+    {
+      "id": "obs-14",
+      "pep_number": 202,
+      "attribute": "status",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": true,
+      "decision": "AGREEMENT_OBSERVED",
+      "reason": "ACCEPTED",
+      "grounded_sources": 2,
+      "source_statuses": {
+        "GROUNDED": 2
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-0202/",
+        "https://github.com/python/peps/blob/main/peps/pep-0202.rst?plain=1"
+      ],
+      "artifact": "obs-14-autonomous_brave",
+      "result_sha256": "387571cc454168178b657544f59e9b3d64395bb0b92656705228f0934a75c2ba"
+    },
+    {
+      "id": "obs-15",
+      "pep_number": 671,
+      "attribute": "type",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "ONE_USABLE_GROUNDED_SOURCE",
+      "grounded_sources": 1,
+      "source_statuses": {
+        "GROUNDED": 1,
+        "ERROR": 1
+      },
+      "grounded_source_urls": [
+        "https://github.com/python/peps/blob/main/peps/pep-0671.rst?plain=1"
+      ],
+      "artifact": "obs-15-autonomous_brave",
+      "result_sha256": "bfaa70c94a272c15afef16b88560bdf48f38a02893e7e6ace6a9575ee623edb4"
+    },
+    {
+      "id": "obs-15",
+      "pep_number": 671,
+      "attribute": "type",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-15-autonomous_serpapi",
+      "result_sha256": "e0e0ccb15ed3cf8fbcbd69769d0c38da4e010150fe21b129c5650cdc6e8d3cef"
+    },
+    {
+      "id": "obs-16",
+      "pep_number": 436,
+      "attribute": "created",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-16-autonomous_serpapi",
+      "result_sha256": "3340bf93d6146488673b3840f0c0eca04c96140084007c9090c01a49174d99c5"
+    },
+    {
+      "id": "obs-16",
+      "pep_number": 436,
+      "attribute": "created",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "ONE_USABLE_GROUNDED_SOURCE",
+      "grounded_sources": 1,
+      "source_statuses": {
+        "GROUNDED": 1
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-0436/"
+      ],
+      "artifact": "obs-16-autonomous_brave",
+      "result_sha256": "3b32d3447e8e0766c3450929059222315066e9590f9e56ac967d6b0faefe14be"
+    },
+    {
+      "id": "obs-17",
+      "pep_number": 818,
+      "attribute": "title",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-17-autonomous_serpapi",
+      "result_sha256": "0c0985799da9478f8bac9de233e5f8efc1da8651714862003f9badc350080654"
+    },
+    {
+      "id": "obs-17",
+      "pep_number": 818,
+      "attribute": "title",
+      "provider": "autonomous_brave",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "CONFLICT",
+      "reason": "CANDIDATE_DIFFERS_UNDER_ORIGINAL_SCORING",
+      "grounded_sources": 3,
+      "source_statuses": {
+        "GROUNDED": 3
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-0818/",
+        "https://github.com/python/steering-council/issues/367",
+        "https://discuss.python.org/t/pep-818-adding-the-core-of-the-pyodide-foreign-function-interface-to-python/105530"
+      ],
+      "artifact": "obs-17-autonomous_brave",
+      "result_sha256": "d9936294b012a3a0ba72418b31df5cec0dcd96b4e1eb9325f97de4f1fddd3771"
+    },
+    {
+      "id": "obs-18",
+      "pep_number": 419,
+      "attribute": "status",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "ONE_USABLE_GROUNDED_SOURCE",
+      "grounded_sources": 1,
+      "source_statuses": {
+        "GROUNDED": 1
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-0419/"
+      ],
+      "artifact": "obs-18-autonomous_brave",
+      "result_sha256": "3d9184b679a5ce28c2017c4ddea708ea1e0d6b3eb8e4b72354dbbf1ed7c2ed73"
+    },
+    {
+      "id": "obs-18",
+      "pep_number": 419,
+      "attribute": "status",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "ERROR",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-18-autonomous_serpapi",
+      "result_sha256": "58b4535443c42ff3a58fcb0feed6c43084b58b11a38d2ed83a07ecd9f6f8f9cd"
+    },
+    {
+      "id": "obs-19",
+      "pep_number": 805,
+      "attribute": "type",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "ERROR",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-19-autonomous_serpapi",
+      "result_sha256": "2ed0bf107fc7d8e7001ebcc7c93a1f01dfde56b0cc31bcb079c5fcf30c9952dd"
+    },
+    {
+      "id": "obs-19",
+      "pep_number": 805,
+      "attribute": "type",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "ONE_USABLE_GROUNDED_SOURCE",
+      "grounded_sources": 1,
+      "source_statuses": {
+        "GROUNDED": 1
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-0805/"
+      ],
+      "artifact": "obs-19-autonomous_brave",
+      "result_sha256": "ab72f94792974a3a83c141bb25dbeee0d1d46f62869669bcf21b5cb8b6625340"
+    },
+    {
+      "id": "obs-20",
+      "pep_number": 3123,
+      "attribute": "created",
+      "provider": "autonomous_serpapi",
+      "candidate_correct": false,
+      "accepted": false,
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "reason": "NO_GROUNDED_CANDIDATE",
+      "grounded_sources": 0,
+      "source_statuses": {},
+      "grounded_source_urls": [],
+      "artifact": "obs-20-autonomous_serpapi",
+      "result_sha256": "942fec6848b46df35ca7304e46e253381a9783f6543895adbc362e87b19bab65"
+    },
+    {
+      "id": "obs-20",
+      "pep_number": 3123,
+      "attribute": "created",
+      "provider": "autonomous_brave",
+      "candidate_correct": true,
+      "accepted": true,
+      "decision": "AGREEMENT_OBSERVED",
+      "reason": "ACCEPTED",
+      "grounded_sources": 2,
+      "source_statuses": {
+        "GROUNDED": 2
+      },
+      "grounded_source_urls": [
+        "https://peps.python.org/pep-3123/",
+        "https://peps.pythondiscord.com/pep-3123/"
+      ],
+      "artifact": "obs-20-autonomous_brave",
+      "result_sha256": "acb2dc83409cbf067c35310dd6d5d53c91829d9e7f5d4a1b678c0dee0671bafa"
+    }
+  ]
+}
