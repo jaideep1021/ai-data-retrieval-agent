@@ -1,32 +1,118 @@
 # Evidence-Grounded AI Data Retrieval Agent
 
-For a guided explanation of Week 2, start with the [code and architecture guide](docs/week2-code-guide.md) or the [weekly report with four task diagrams](docs/week2-report.md). Download the repository and open `docs/walkthrough/index.html` for the offline interactive walkthrough. No API key or installation is needed for this teaching page.
+A research project that investigates how an agent can retrieve missing or
+questionable data from public sources, preserve supporting evidence, and decide
+whether a candidate value can be accepted or should remain unresolved.
 
+The project progresses from a Python Enhancement Proposal (PEP) metadata prototype
+to autonomous source discovery and historical DOT airfare experiments. It separates
+**finding a correct value** from **having sufficient evidence to accept it**.
 
-**Week 3 package: v0.3.0 · preserved releases: v0.2.0 and v0.1.0**
+**Current release: v0.3.0 — Week 3 research.** Earlier releases remain available
+as `v0.1.0` (Week 1) and `v0.2.0` (Week 2).
 
-Start with the [Week 2 report for Dr. Sibdari](docs/week2-report.md), then the
-[Week 2 reproduction guide](docs/week2-reproduction.md). The package contains the
-original PEP-specific pipeline and separate autonomous implementations, an
-actual 20-record/60-trial evaluation, and a prepared historical airline dataset.
+## Week 3 work and results
+
+Week 3 evaluated the approved 30 DOT observations, investigated verification
+failures, added Socrata as a third retrieval service, and developed an initial
+literature-based formulation of the accept, retrieve or abstain decision.
+
+Six observations supported development; the remaining 24 were evaluated after
+freezing the core implementation. Each observation was tested through SerpApi,
+Brave and Socrata: 18 development trials and 72 held-out trials in total.
+
+| Held-out discovery service | Correct candidate | Retrieved record | Correctly accepted | Mean time | Search cost scenario |
+|---|---:|---:|---:|---:|---:|
+| SerpApi | 0/24 | 0/24 | 0/24 | 2.89 s | $1.20 |
+| Brave | 24/24 | 24/24 | 24/24 | 8.98 s | $0.12 |
+| Socrata | 24/24 | 24/24 | 24/24 | 8.59 s | $0 paid-search allocation |
+
+These are results for a **specialized DOT workflow**, not a universal ranking of
+search services. The successful path uses deterministic query templates, declared
+DOT schema knowledge and structured records; it makes no Gemini calls. SerpApi
+returned search results, but the bounded workflow did not locate an eligible
+city-market dataset. Socrata searches a specialized public-data catalog.
+Costs are allocation scenarios, not verified invoices; public API requests are
+counted separately. All cases share a quarter and dataset family.
+
+Verification now checks DOT publisher provenance, reporting period, market IDs
+and field definitions. A separate audit of Week 2 identified 13 correct candidates
+that were not accepted: 12 lacked a second usable grounded source and one had a
+title-prefix conflict. The new authority policy is domain-specific; it does not
+establish a general truth verifier or calibrated confidence model.
+
+- [Comprehensive Week 3 report](docs/week3-report.md) · [Word version](docs/week3-report.docx)
+- [Full experimental findings](docs/week3-structured-findings.md) · [Per-trial results](docs/week3-structured-results.json)
+- [Method and reproduction commands](docs/week3-structured-retrieval.md)
+- [Verification rejection audit](docs/week3-rejection-audit.md)
+- [Literature review](docs/week3-literature-review.md) · [Proposed decision experiment](docs/week3-decision-experiment-plan.md)
+
+The decision-policy experiment is proposed work; no simulator or learned stopping
+policy is included. Earlier failed LLM/PDF pilots remain documented alongside the
+successful structured experiment.
+
+## Run the Week 3 workflow
+
+For a fresh macOS/Linux checkout with Python 3.13 installed:
+
+```sh
+git clone https://github.com/jaideep1021/ai-data-retrieval-agent.git
+cd ai-data-retrieval-agent
+python3.13 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-business.txt
+python -m unittest discover -s tests
+python evaluate_business.py check
+python retrieve_record.py --record-id airfare-01 --provider socrata
+```
+
+The tests and input check are offline. The last command makes live public API
+requests and saves evidence in a new ignored `runs/` folder; this Socrata path
+requires no API key or Chromium browser. For exact released-code reproduction,
+check out `v0.3.0` before installing. On Windows, create the environment with
+`py -3.13 -m venv .venv` and use `.\.venv\Scripts\python.exe` for Python commands.
+
+For SerpApi/Brave experiments, copy `.env.example` to `.env` **only if `.env` does
+not already exist**, then configure your keys. LLM-based paths also require Gemini
+access. Preserve existing keys and keep `.env` private. See the method guide for
+paired-run commands and budgets. The original browser-based PEP workflow has
+separate installation instructions below.
+
+## Project versions and entry points
+
+| Version | Scope |
+|---|---|
+| v0.1.0 — Week 1 | Eight-record PEP prototype, known-URL fallback and reference verification |
+| v0.2.0 — Week 2 | Autonomous search, multi-source comparison, 20-record/60-trial PEP evaluation and DOT sample preparation |
+| v0.3.0 — Week 3 | DOT experiments, structured retrieval, authority-aware checks, Socrata comparison, rejection audit and research formulation |
 
 | Entry point | Purpose |
 |---|---|
-| `agent.py` | Original v0.1.0 PEP baseline, known-URL fallback and reference verification |
-| `autonomous.py` | Deliverable 1 single-source autonomous discovery |
-| `multisource.py` | Deliverable 2 multi-source comparison with SerpApi or Brave |
-| `evaluate.py` | Paired benchmark with pacing, usage records and explicit scoring |
-| `evaluation_report.py` | Rebuild readable benchmark tables from saved local runs |
+| `agent.py` | Preserved Week 1 PEP baseline |
+| `autonomous.py` | Autonomous single-source discovery |
+| `multisource.py` | Multi-source comparison with SerpApi or Brave |
+| `evaluate.py` / `evaluation_report.py` | Week 2 benchmark and saved-results reporting |
 | `prepare_business_data.py` | Prepare/replay the public historical airline sample |
+| `business_agent.py` / `business_documents.py` | LLM business-data retrieval and HTML/PDF reading |
+| `retrieve_record.py` / `structured_retrieval.py` | Single-record entry point and structured DOT retrieval |
+| `evaluate_business.py` / `evaluate_structured.py` | Separate business experiments and offline reference scoring |
+| `scripts/audit_week2_rejections.py` | Reproduce the audit using private saved Week 2 evidence |
 
-The v0.2.0 release did not include a business-domain agent evaluation or price predictor. See the
-[release review](docs/release-review-v0.2.0.md) for the recorded validation checks.
+## Code explanation and architecture
+
+For the Week 2 implementation, read the [code and architecture guide](docs/week2-code-guide.md)
+or the [weekly report with four task diagrams](docs/week2-report.md). Download the
+repository and open `docs/walkthrough/index.html` for the offline interactive
+walkthrough. This is a teaching simulation, not live execution; it requires no API
+key or installation. The [Week 2 reproduction guide](docs/week2-reproduction.md)
+provides its setup and commands. Week 3's workflow and verification rules are
+explained in the [structured retrieval guide](docs/week3-structured-retrieval.md).
 
 ## Original Week 1 baseline guide
 
 The setup below checks out **v0.1.0 intentionally** and does not contain the Week 2
-files. To work with this local Week 2 checkout, use the separate reproduction guide
-above for the v0.2.0 setup commands.
+or Week 3 files. For the current workflow, use the Week 3 setup above; for Week 2,
+use its separate reproduction guide.
 
 This Python program proposes corrections to a small CSV of Python Enhancement
 Proposal (PEP) metadata. It searches for the official page, opens it in a browser,
@@ -328,9 +414,11 @@ change despite pinned Python dependencies.
 - **v0.1.0:** preserved specialized baseline and its original release tag.
 - **v0.2.0:** autonomous discovery, multi-source comparisons,
   paired evaluation and public business-dataset preparation. See the Week 2 report.
-- **Proposed next work, subject to Dr. Sibdari's feedback:** better query recovery,
-  numeric/unit and market/period matching, structured-data retrieval and a fresh
-  business-domain evaluation. No prediction system or general truth verifier yet.
+- **v0.3.0:** DOT evaluation, structured-data access, publisher/context verification,
+  Socrata comparison and an initial research formulation.
+- **Proposed next work, subject to Dr. Sibdari's feedback:** adaptive query/schema
+  handling, calibrated confidence and cost-aware stopping on new data.
+  No prediction system or general truth verifier is claimed.
 
 Use semantic versioning for the package. Keep the original agent's version label
 at 0.1.0 while its implementation is frozen; development paths retain their recorded
