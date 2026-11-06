@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1 — Week 3 documentation update
+
+- Include the revised project introduction, Week 3 results and current setup
+  instructions in a versioned release, with Week 2 teaching links further down.
+- Preserve v0.3.0 and all earlier tags. No experiment code, data or results changed.
+
 ## 0.3.0 — Week 3 research — 2026-11-06
 
 - Added blinded DOT task inputs, separate scoring, bounded business-page/PDF retrieval

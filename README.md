@@ -8,7 +8,7 @@ The project progresses from a Python Enhancement Proposal (PEP) metadata prototy
 to autonomous source discovery and historical DOT airfare experiments. It separates
 **finding a correct value** from **having sufficient evidence to accept it**.
 
-**Current release: v0.3.0 — Week 3 research.** Earlier releases remain available
+**Current release: v0.3.1 — Week 3 research and documentation update.** Earlier releases remain available
 as `v0.1.0` (Week 1) and `v0.2.0` (Week 2).
 
 ## Week 3 work and results
@@ -69,7 +69,7 @@ python retrieve_record.py --record-id airfare-01 --provider socrata
 The tests and input check are offline. The last command makes live public API
 requests and saves evidence in a new ignored `runs/` folder; this Socrata path
 requires no API key or Chromium browser. For exact released-code reproduction,
-check out `v0.3.0` before installing. On Windows, create the environment with
+check out `v0.3.1` before installing. On Windows, create the environment with
 `py -3.13 -m venv .venv` and use `.\.venv\Scripts\python.exe` for Python commands.
 
 For SerpApi/Brave experiments, copy `.env.example` to `.env` **only if `.env` does
@@ -85,6 +85,7 @@ separate installation instructions below.
 | v0.1.0 — Week 1 | Eight-record PEP prototype, known-URL fallback and reference verification |
 | v0.2.0 — Week 2 | Autonomous search, multi-source comparison, 20-record/60-trial PEP evaluation and DOT sample preparation |
 | v0.3.0 — Week 3 | DOT experiments, structured retrieval, authority-aware checks, Socrata comparison, rejection audit and research formulation |
+| v0.3.1 — Week 3 documentation | Improved project introduction, prominent Week 3 findings and current setup instructions; experiment code and results unchanged |
 
 | Entry point | Purpose |
 |---|---|
