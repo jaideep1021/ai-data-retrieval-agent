@@ -516,7 +516,7 @@ python retrieve_record.py --record-id airfare-01 --provider socrata
 This command makes live requests and saves private evidence. It uses a declared
 DOT schema and automatic template queries; it does not use Gemini.
 
-Week 3 follow-up: [technical task status and meeting explanation](docs/week3-technical-task-status.md)
+Week 3 follow-up: [technical task status and implementation notes](docs/week3-technical-task-status.md)
 and [case-by-case Week 2 rejection audit](docs/week3-rejection-audit.md).
 
 For the combined Week 3 research update, read the [short report](docs/week3-report.md)

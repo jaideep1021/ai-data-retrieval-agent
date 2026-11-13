@@ -1,7 +1,5 @@
 # AI Web Agent Research Progress Report
 
-Jaideep Manupati | Prepared 12 November 2026 for the 13 November meeting
-
 ## Progress to date
 
 The project extends the original evidence-grounded Python agent rather than replacing it. Week 1 established PEP retrieval, Gemini extraction, source evidence and reference-based checks. Week 2 added autonomous query generation, SerpApi/Brave discovery, multi-source comparison, evaluation and a documented DOT sample. These stages distinguish finding a plausible value from obtaining sufficient evidence to accept it.
@@ -12,7 +10,7 @@ The DOT experiment used 30 observations: six development and 24 held-out cases, 
 
 The current research application targets Kenya, South Africa and Nigeria, focusing on commercial bilateral air-service agreements and restrictions affecting international connectivity, with historical evidence relevant to 2009–2019. Announcement, signature, proposed signing, publication and entry into force must remain distinct. Unknown dates are retained rather than inferred.
 
-Implemented locally:
+Implemented capabilities:
 - Task-driven query generation and bounded provider trials with selection explanations and request accounting.
 - Public-source retrieval with access safeguards, PDF attachments and source hashes.
 - Parent-document bytes saved before parsing, including failures; retrieval failures and parsing failures distinguished.
@@ -39,11 +37,11 @@ Still incomplete: full country/topic evaluation, the verified regulatory-event C
 
 Current offline validation: 195 tests run, 194 passed and one optional browser test skipped. These tests validate software behavior, not regulatory accuracy. This work is packaged as the v0.4.0 development checkpoint; research deliverables remain incomplete as listed above.
 
-## Demonstration and decisions for the meeting
+## Reproduction and evaluation priorities
 
-Demonstrate one structured DOT retrieval with provenance, then a saved aviation trace showing search, selection, access/parsing failures and preserved evidence. Show OCR and counterpart screening as separate diagnostic stages. Retain saved outputs as backup and label them clearly.
+The [aviation setup guide](README.md) describes installation, bounded execution and reproduction limits. Structured DOT retrieval, saved aviation traces and offline OCR screening represent different experimental conditions and must be evaluated separately. Historical raw evidence is retained locally and is not distributed with the repository.
 
-Agree on: (1) US bilateral versus additional intra-African coverage; (2) acceptable historical evidence when primary archives are inaccessible; (3) treatment of unknown effective dates; and (4) a fixed evaluation set and request budget. Freeze the revised method before broader evaluation, retain original machine outputs, and report human-corrected dataset quality separately. The immediate objective is traceable regulatory data acquisition; downstream ML and causal work should follow a defensible data-quality assessment.
+Before expanding evaluation, define: (1) US bilateral versus additional intra-African coverage; (2) acceptable historical evidence when primary archives are inaccessible; (3) treatment of unknown effective dates; and (4) a fixed evaluation set and request budget. Freeze the revised method before broader evaluation, retain original machine outputs, and report human-corrected dataset quality separately. The immediate objective is traceable regulatory data acquisition; downstream ML and causal work should follow a defensible data-quality assessment.
 
 ## Outstanding deliverables and completion criteria
 
@@ -55,4 +53,4 @@ Agree on: (1) US bilateral versus additional intra-African coverage; (2) accepta
 | OCR-to-event workflow | Not implemented | Carry OCR provenance and partial coverage through extraction and verification before considering acceptance. Current OCR supports screening only. |
 | Cost-aware sequential policy | Research formulation | Define/calibrate beliefs and evaluate accept/retrieve/abstain policies; do not equate rules with calibrated probabilities. |
 
-The completed implementation and diagnostic work supports a progress demonstration. It does not satisfy the outstanding dataset and evaluation deliverables. These gaps should be discussed explicitly at the meeting.
+The current implementation supports further controlled evaluation. Completion requires the verified dataset and empirical assessment specified above.
