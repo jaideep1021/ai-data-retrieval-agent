@@ -31,7 +31,6 @@ The latest US–South Africa trial produced zero verified events. This release i
 claim of a completed regulatory dataset or universal retrieval accuracy.
 
 - [Concise research progress report](docs/aviation-regulations/progress-summary-20261113.md)
-- [Printable report (PDF)](docs/aviation-regulations/progress-report-v0.4.0.pdf)
 - [Setup and reproduction boundaries](docs/aviation-regulations/README.md)
 - [Release notes](docs/aviation-regulations/release-v0.4.0.md)
 
