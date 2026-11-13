@@ -1,11 +1,18 @@
-# v0.4.0 — Aviation retrieval development checkpoint
+# v0.4.0 — Commercial aviation research checkpoint
 
-12 November 2026.
+The existing agent now supports bounded commercial-aviation discovery, document preservation, evidence and date checks, human review, optional OCR screening and source-selection diagnostics. Earlier PEP and DOT baselines remain available.
 
-Includes bounded aviation query/search/retrieval, preserved raw bytes and hashes, review interfaces, safe failure reporting, optional OCR screening and counterpart/navigation development checks. Preserves earlier baseline tags and results.
+## Findings
 
-Windows correction: review submission timestamps now use timezone-aware UTC (+00:00). Windows no longer needs an external IANA timezone database for these audit records. Existing review rows are not rewritten. UTC is the audit storage convention.
+US–South Africa development trials exposed access failures, irrelevant agreements and unsupported date proposals. An early South Africa–Chad candidate was flagged and remained unverified; subsequent paired trials extracted no events. Kenya and Nigeria bilateral evaluation and the verified event dataset are not complete. OCR supports screening only. This checkpoint does not establish regulatory accuracy or universal retrieval capability.
 
-Research status: no verified US–South Africa events in the latest paired trial; full three-country/topic evaluation and final verified-event CSV remain incomplete. Optional OCR is screening only. No claims of universal accuracy, calibrated confidence, or a learned stopping policy.
+## Documentation update
 
-See the research progress report and aviation README for results, limits and setup. Raw evidence, credentials and private working notes are excluded. Release verification uses the offline suite plus GitHub's Linux/macOS/Windows jobs; consult the Actions run for platform-specific results.
+The concise two-page progress report and interactive implementation guide are published on main. The attached PDF and Word report summarize work through 13 November 2026. The original v0.4.0 tag remains unchanged for reproducibility; these documentation additions are available from main and the release assets.
+
+- [Progress report](https://github.com/jaideep1021/ai-data-retrieval-agent/blob/main/docs/aviation-regulations/progress-summary-20261113.md)
+- [Interactive guide instructions](https://github.com/jaideep1021/ai-data-retrieval-agent/blob/main/docs/project-walkthrough/README.md)
+
+## Validation and privacy
+
+The recorded offline checkpoint ran 195 tests, with 194 passing and one optional browser test skipped. The original release commit passed Linux, macOS and Windows CI. Review timestamps use explicit UTC to avoid the Windows timezone-database dependency. Documentation updates do not alter the retrieval pipeline. Credentials, raw evidence and private correspondence are excluded from the public repository.

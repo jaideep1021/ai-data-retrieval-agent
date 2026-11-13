@@ -1,56 +1,39 @@
-# AI Web Agent Research Progress Report
+# Commercial Aviation Agent Progress Report
 
-## Progress to date
+Research update | 13 November 2026 | v0.4.0
 
-The project extends the original evidence-grounded Python agent rather than replacing it. Week 1 established PEP retrieval, Gemini extraction, source evidence and reference-based checks. Week 2 added autonomous query generation, SerpApi/Brave discovery, multi-source comparison, evaluation and a documented DOT sample. These stages distinguish finding a plausible value from obtaining sufficient evidence to accept it.
+## Purpose and outcome
 
-The DOT experiment used 30 observations: six development and 24 held-out cases, covering fares, daily passengers and distances. In the specialized structured workflow, Brave and Socrata each retrieved and correctly accepted 24/24 held-out values; SerpApi retrieved none under the tested configuration. Mean provider times were 8.98, 8.59 and 2.89 seconds respectively. Socrata is a public structured-data service, not a general search engine. The successful workflow used declared DOT schema knowledge and no Gemini calls. These are workflow-specific results, not universal accuracy or search-provider rankings. Earlier document/LLM failures remain part of the record. See [Week 3 report](../week3-report.md) for methodology, costs and limitations.
+We extended the existing AI Web Agent to investigate historical commercial aviation agreements and policy information for Kenya, South Africa and Nigeria, with relevance to 2009–2019. The work established a traceable retrieval and review workflow and identified concrete document-access and interpretation problems. It has not yet produced a verified US–Africa agreement dataset.
 
-## Commercial aviation extension
+## Foundation from earlier work
 
-The current research application targets Kenya, South Africa and Nigeria, focusing on commercial bilateral air-service agreements and restrictions affecting international connectivity, with historical evidence relevant to 2009–2019. Announcement, signature, proposed signing, publication and entry into force must remain distinct. Unknown dates are retained rather than inferred.
+The original prototype retrieved PEP metadata and preserved supporting evidence. Later work added autonomous queries, SerpApi and Brave search, and multiple-source comparison. The DOT experiment used 30 observations: six development cases and 24 held-out cases. In the specialized structured workflow, Brave and Socrata each recovered and correctly accepted 24 of 24 held-out values; SerpApi recovered none in that earlier configuration. These results describe that experiment, not a universal ranking of services. The successful structured route used DOT schema knowledge without Gemini.
 
-Implemented capabilities:
-- Task-driven query generation and bounded provider trials with selection explanations and request accounting.
-- Public-source retrieval with access safeguards, PDF attachments and source hashes.
-- Parent-document bytes saved before parsing, including failures; retrieval failures and parsing failures distinguished.
-- Evidence/date/scope checks and a local human-review workflow developed during the earlier Kenya pilot.
-- Content-link prioritization, run-local navigation queuing and publisher-access downranking; generic navigation now needs an agreement/Open Skies cue for bilateral tasks.
-- Optional local OCR screening, with engine provenance, reviewed-page coverage and strict limits. OCR is screening only: it does not automatically generate verified events.
-- Narrow counterpart screening for wrapped agreement headings and explicit memorandum party clauses.
+## Commercial aviation implementation
 
-## Latest observed results
+Following the clarification that the focus was commercial aviation, we adapted the agent to identify agreement parties, commercial provisions, document status and distinct date types. Gemini generates search queries and proposes structured claims from retrieved passages. SerpApi and Brave discover possible sources. The program limits requests, preserves downloaded evidence and records failures. A local interactive architecture guide explains the workflow and lets users inspect saved results.
 
-The latest paired US–South Africa development trial used two searches and three parent-document attempts per provider. It made seven Gemini calls in total, including shared planning, and extracted zero events. SerpApi reached generic notice indexes; Brave encountered State Department access failures and an ICAO page with no usable text. OCR was enabled but not triggered. This run tested parts of the workflow, not full country/topic coverage.
+## Observed findings
 
-Separate researcher-assisted diagnostics established that two Parliament PDFs concerned South Africa–Namibia, not the US. One memorandum envisaged signing in 2025, rather than documenting an effective date. Local OCR of three agreement pages and the one-page memorandum recovered their parties but introduced text errors. These are development fixtures, not independent evaluation successes.
+The bilateral-agreement development trials focused on US–South Africa. An early Brave trial proposed a South Africa–Chad agreement and a precise signing date not explicitly supported by its garbled quotation. The checks flagged the party evidence and date; the candidate remained unverified. Later paired trials, including the 13 November demonstration, extracted no events. Observed obstacles included irrelevant or generic pages, State Department access failures and an ICAO response without usable text. No extraction does not establish that no agreement exists.
 
-A separately inspected DOT current Open Skies list was accessible and listed Kenya and Nigeria. It provided no historical effective dates or country-specific instrument links. South Africa's absence from that list does not prove absence of a bilateral agreement. A 2026 list cannot establish applicability throughout 2009–2019.
+## Document reading and OCR
 
-The subsequent offline navigation refinement removes seven generic directory candidates from a saved SerpApi selection. This is a hypothetical replay, not evidence of improved live retrieval. No verified target events have been added from these trials.
+Two separately examined Parliament PDFs concerned South Africa–Namibia, not the US counterpart. One memorandum described a proposed 2025 signing window, not a verified effective date. Ordinary PDF text extraction failed, although the pages were visually readable. Bounded local OCR recovered text with some errors; the longer document was examined through three of 29 pages. Coverage and source hashes were recorded. OCR currently supports screening, not automatic creation of verified events.
 
-## Challenges and incomplete work
+## Verification and human validation
 
-Official publisher status alone does not establish historical applicability, correct counterpart or substantive evidence. Access failures, image-only documents, ambiguous dates, irrelevant search results and generic directories require different responses. OCR can help read a page but can also corrupt names and dates. The counterpart rules cover narrow English layouts and are not a universal authority or scope classifier.
+Automatic checks test whether quotations occur in the cited passages, whether the country and party evidence match the task, and whether proposed dates are explicitly supported by their wording. They flag drafts, metadata-only records, uncertain source roles and unresolved historical applicability. Signature, publication and entry into force remain separate. These checks are conservative rules, not a complete legal interpretation or calibrated confidence measure. Every commercial candidate still requires human validation. Reviewers inspect context and record acceptance, correction, exclusion or an unresolved decision; original machine proposals remain separate from corrections.
 
-Still incomplete: full country/topic evaluation, the verified regulatory-event CSV, independently evaluated end-to-end historical retrieval, and final aviation results. Automatic OCR-to-event extraction is not implemented. The accept/retrieve/abstain cost-aware policy remains a research formulation; calibrated confidence, learned stopping and downstream causal analysis are not completed capabilities.
+## Coverage and interpretation
 
-Current offline validation: 195 tests run, 194 passed and one optional browser test skipped. These tests validate software behavior, not regulatory accuracy. This work is packaged as the v0.4.0 development checkpoint; research deliverables remain incomplete as listed above.
+Kenya’s earlier pilot concerned safety and security documents; it is not a completed US–Kenya bilateral evaluation. Comparable US–Kenya and US–Nigeria agreement trials are not established in the inspected run records. A separately inspected current DOT Open Skies list mentioned Kenya and Nigeria but did not establish historical effective dates. The verified event CSV, full country-topic evaluation and independent regulatory-accuracy assessment remain incomplete. This report closes the current work period; further scope will follow the next assignment.
 
-## Reproduction and evaluation priorities
+## Software validation and release
 
-The [aviation setup guide](README.md) describes installation, bounded execution and reproduction limits. Structured DOT retrieval, saved aviation traces and offline OCR screening represent different experimental conditions and must be evaluated separately. Historical raw evidence is retained locally and is not distributed with the repository.
+The recorded offline checkpoint ran 195 tests: 194 passed and one optional browser test was skipped. The v0.4.0 release commit passed Linux, macOS and Windows CI. Separate browser checks covered the interactive guide and saved-result loading. These checks establish software behavior, not historical or regulatory accuracy. A 13 November DOT demonstration also showed SerpApi accepting one fare record while another passenger query remained unresolved; these are additional observations, not a replacement benchmark. Public code and research documentation are available in the repository. Credentials, raw run evidence and private correspondence are excluded.
 
-Before expanding evaluation, define: (1) US bilateral versus additional intra-African coverage; (2) acceptable historical evidence when primary archives are inaccessible; (3) treatment of unknown effective dates; and (4) a fixed evaluation set and request budget. Freeze the revised method before broader evaluation, retain original machine outputs, and report human-corrected dataset quality separately. The immediate objective is traceable regulatory data acquisition; downstream ML and causal work should follow a defensible data-quality assessment.
+Repository: https://github.com/jaideep1021/ai-data-retrieval-agent
 
-## Outstanding deliverables and completion criteria
-
-| Deliverable | Status | Completion criterion |
-|---|---|---|
-| Verified regulatory-event CSV | Incomplete | Each retained event has correct parties, source evidence, explicit date semantics and a recorded review decision; unknown dates remain unknown. |
-| Country/topic evaluation | Incomplete | Run the agreed combinations under a frozen method and budget; distinguish development cases from evaluation cases. |
-| Final aviation findings report | Incomplete | Summarize actual coverage, supported claims, errors, review burden, time and usage from the completed evaluation. |
-| OCR-to-event workflow | Not implemented | Carry OCR provenance and partial coverage through extraction and verification before considering acceptance. Current OCR supports screening only. |
-| Cost-aware sequential policy | Research formulation | Define/calibrate beliefs and evaluate accept/retrieve/abstain policies; do not equate rules with calibrated probabilities. |
-
-The current implementation supports further controlled evaluation. Completion requires the verified dataset and empirical assessment specified above.
+Release: https://github.com/jaideep1021/ai-data-retrieval-agent/releases/tag/v0.4.0

@@ -11,6 +11,14 @@ to autonomous source discovery and historical DOT airfare experiments. It separa
 **Current release: v0.4.0 — Aviation retrieval development checkpoint.**
 Earlier tags preserve the PEP and DOT research baselines.
 
+## Interactive implementation guide
+
+Open [the connected architecture explorer](docs/project-walkthrough/index.html) from a downloaded checkout.
+It covers Week 1 through the aviation extension, with clickable stages, code snapshots
+and local saved-result inspection. It runs offline without a server. The animation
+explains the design; it is not a live execution monitor. See the
+[presentation sequence and file guide](docs/project-walkthrough/README.md).
+
 ## Aviation research: implementation and evaluation status
 
 The aviation extension investigates historical commercial agreements and restrictions
@@ -18,13 +26,14 @@ for Kenya, South Africa and Nigeria. It adds bounded discovery, document preserv
 review tools, optional OCR screening and source-selection diagnostics.
 
 **Completed:** implementation checkpoints, failure analysis and documented development trials.
-**Incomplete:** verified regulatory-event CSV, full country/topic evaluation and final aviation findings.
+**Evaluation limits:** the verified regulatory-event CSV and full country/topic evaluation have not been completed. Further scope will follow the next research assignment.
 The latest US–South Africa trial produced zero verified events. This release is not a
 claim of a completed regulatory dataset or universal retrieval accuracy.
 
-- [Research progress report](docs/aviation-regulations/progress-summary-20261113.md)
+- [Concise research progress report](docs/aviation-regulations/progress-summary-20261113.md)
+- [Printable report (PDF)](docs/aviation-regulations/progress-report-v0.4.0.pdf)
 - [Setup and reproduction boundaries](docs/aviation-regulations/README.md)
-- [Release notes and outstanding work](docs/aviation-regulations/release-v0.4.0.md)
+- [Release notes](docs/aviation-regulations/release-v0.4.0.md)
 
 ## Week 3 work and results
 
