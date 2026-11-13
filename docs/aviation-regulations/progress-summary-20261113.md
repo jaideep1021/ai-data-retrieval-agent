@@ -1,4 +1,4 @@
-# AI Web Agent: progress and next steps
+# AI Web Agent Research Progress Report
 
 Jaideep Manupati | Prepared 12 November 2026 for the 13 November meeting
 
@@ -37,10 +37,22 @@ Official publisher status alone does not establish historical applicability, cor
 
 Still incomplete: full country/topic evaluation, the verified regulatory-event CSV, independently evaluated end-to-end historical retrieval, and final aviation results. Automatic OCR-to-event extraction is not implemented. The accept/retrieve/abstain cost-aware policy remains a research formulation; calibrated confidence, learned stopping and downstream causal analysis are not completed capabilities.
 
-Current offline validation: 195 tests run, 194 passed and one optional browser test skipped. These tests validate software behavior, not regulatory accuracy. Latest changes are local development work awaiting publication review.
+Current offline validation: 195 tests run, 194 passed and one optional browser test skipped. These tests validate software behavior, not regulatory accuracy. This work is packaged as the v0.4.0 development checkpoint; research deliverables remain incomplete as listed above.
 
 ## Demonstration and decisions for the meeting
 
 Demonstrate one structured DOT retrieval with provenance, then a saved aviation trace showing search, selection, access/parsing failures and preserved evidence. Show OCR and counterpart screening as separate diagnostic stages. Retain saved outputs as backup and label them clearly.
 
 Agree on: (1) US bilateral versus additional intra-African coverage; (2) acceptable historical evidence when primary archives are inaccessible; (3) treatment of unknown effective dates; and (4) a fixed evaluation set and request budget. Freeze the revised method before broader evaluation, retain original machine outputs, and report human-corrected dataset quality separately. The immediate objective is traceable regulatory data acquisition; downstream ML and causal work should follow a defensible data-quality assessment.
+
+## Outstanding deliverables and completion criteria
+
+| Deliverable | Status | Completion criterion |
+|---|---|---|
+| Verified regulatory-event CSV | Incomplete | Each retained event has correct parties, source evidence, explicit date semantics and a recorded review decision; unknown dates remain unknown. |
+| Country/topic evaluation | Incomplete | Run the agreed combinations under a frozen method and budget; distinguish development cases from evaluation cases. |
+| Final aviation findings report | Incomplete | Summarize actual coverage, supported claims, errors, review burden, time and usage from the completed evaluation. |
+| OCR-to-event workflow | Not implemented | Carry OCR provenance and partial coverage through extraction and verification before considering acceptance. Current OCR supports screening only. |
+| Cost-aware sequential policy | Research formulation | Define/calibrate beliefs and evaluate accept/retrieve/abstain policies; do not equate rules with calibrated probabilities. |
+
+The completed implementation and diagnostic work supports a progress demonstration. It does not satisfy the outstanding dataset and evaluation deliverables. These gaps should be discussed explicitly at the meeting.

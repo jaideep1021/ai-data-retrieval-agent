@@ -1,15 +1,5 @@
 # Evidence-Grounded AI Data Retrieval Agent
 
-## Commercial aviation development update — 12 November 2026
-
-Read the [meeting progress report](docs/aviation-regulations/progress-summary-20261113.md)
-and [aviation setup and status](docs/aviation-regulations/README.md).
-This development update adds bounded discovery, evidence preservation, review tools,
-optional OCR screening and navigation diagnostics. The final verified regulatory
-CSV and full country/topic evaluation are **not complete**. Earlier release tags
-and benchmark results remain unchanged.
-
-
 A research project that investigates how an agent can retrieve missing or
 questionable data from public sources, preserve supporting evidence, and decide
 whether a candidate value can be accepted or should remain unresolved.
@@ -18,8 +8,23 @@ The project progresses from a Python Enhancement Proposal (PEP) metadata prototy
 to autonomous source discovery and historical DOT airfare experiments. It separates
 **finding a correct value** from **having sufficient evidence to accept it**.
 
-**Current release: v0.3.1 — Week 3 research and documentation update.** Earlier releases remain available
-as `v0.1.0` (Week 1) and `v0.2.0` (Week 2).
+**Current release: v0.4.0 — Aviation retrieval development checkpoint.**
+Earlier tags preserve the PEP and DOT research baselines.
+
+## Aviation research: implementation and evaluation status
+
+The aviation extension investigates historical commercial agreements and restrictions
+for Kenya, South Africa and Nigeria. It adds bounded discovery, document preservation,
+review tools, optional OCR screening and source-selection diagnostics.
+
+**Completed:** implementation checkpoints, failure analysis and documented development trials.
+**Incomplete:** verified regulatory-event CSV, full country/topic evaluation and final aviation findings.
+The latest US–South Africa trial produced zero verified events. This release is not a
+claim of a completed regulatory dataset or universal retrieval accuracy.
+
+- [Research progress report](docs/aviation-regulations/progress-summary-20261113.md)
+- [Setup and reproduction boundaries](docs/aviation-regulations/README.md)
+- [Release notes and outstanding work](docs/aviation-regulations/release-v0.4.0.md)
 
 ## Week 3 work and results
 

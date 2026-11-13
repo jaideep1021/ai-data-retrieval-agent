@@ -6,7 +6,7 @@ calls are made. CSV writes are atomic, with backups and a separate submission lo
 """
 import argparse
 import csv
-from datetime import datetime
+from datetime import datetime, timezone
 import io
 import json
 import os
@@ -14,7 +14,6 @@ from pathlib import Path
 import secrets
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlsplit, parse_qs
-from zoneinfo import ZoneInfo
 
 
 BASE_FIELDS=['candidate_id','proposed_route','human_route','event_correct_as_written',
@@ -62,7 +61,7 @@ def safe_cell(value):
 
 def save_submission(path, card, payload):
     """Update exactly one row; preserve old columns, other rows and prior revisions."""
-    now=datetime.now(ZoneInfo('America/New_York')).isoformat()
+    now=datetime.now(timezone.utc).isoformat()
     old=path.read_bytes() if path.exists() else b''
     reader=csv.DictReader(io.StringIO(old.decode('utf-8')))
     rows=list(reader);columns=list(reader.fieldnames or BASE_FIELDS)

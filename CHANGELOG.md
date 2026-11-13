@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 — Aviation retrieval development checkpoint — 2026-11-12
+
+- Add bounded commercial aviation discovery, PDF evidence preservation and review workflows.
+- Add optional local OCR screening, counterpart checks and navigation fallback diagnostics.
+- Publish development findings with explicit incomplete dataset/evaluation status.
+- Fix Windows review submission failures by recording timezone-aware UTC audit timestamps.
+- Preserve prior tags and benchmark results; no claim of completed regulatory coverage.
+
 ## 0.3.1 — Week 3 documentation update
 
 - Include the revised project introduction, Week 3 results and current setup
