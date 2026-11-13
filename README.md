@@ -1,5 +1,15 @@
 # Evidence-Grounded AI Data Retrieval Agent
 
+## Commercial aviation development update — 12 November 2026
+
+Read the [meeting progress report](docs/aviation-regulations/progress-summary-20261113.md)
+and [aviation setup and status](docs/aviation-regulations/README.md).
+This development update adds bounded discovery, evidence preservation, review tools,
+optional OCR screening and navigation diagnostics. The final verified regulatory
+CSV and full country/topic evaluation are **not complete**. Earlier release tags
+and benchmark results remain unchanged.
+
+
 A research project that investigates how an agent can retrieve missing or
 questionable data from public sources, preserve supporting evidence, and decide
 whether a candidate value can be accepted or should remain unresolved.

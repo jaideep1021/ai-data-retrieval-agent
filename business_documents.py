@@ -21,11 +21,11 @@ class DocumentError(ValueError):
         self.reason_code = code
 
 
-def pdf_text(raw):
+def pdf_text(raw, max_bytes=MAX_DOCUMENT_BYTES):
     """Use disk only as an isolated parser input; delete temporary files afterward."""
     if not raw.startswith(b'%PDF-'):
         raise DocumentError('INVALID_PDF_SIGNATURE')
-    if len(raw) > MAX_DOCUMENT_BYTES:
+    if not 0 < max_bytes <= 20_000_000 or len(raw) > max_bytes:
         raise DocumentError('DOCUMENT_TOO_LARGE')
     with tempfile.TemporaryDirectory(prefix='business-pdf-') as folder:
         path = Path(folder) / 'input.pdf'

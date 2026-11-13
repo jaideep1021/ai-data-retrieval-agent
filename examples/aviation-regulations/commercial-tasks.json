@@ -1,0 +1,62 @@
+[
+  {
+    "task_id": "KEN-us_bilateral_air_services",
+    "country": "Kenya",
+    "country_iso3": "KEN",
+    "topic": "us_bilateral_air_services",
+    "period_start": 2009,
+    "period_end": 2019,
+    "include_supported_prior_background": true,
+    "commercial_scope": true
+  },
+  {
+    "task_id": "KEN-commercial_connectivity_changes",
+    "country": "Kenya",
+    "country_iso3": "KEN",
+    "topic": "commercial_connectivity_changes",
+    "period_start": 2009,
+    "period_end": 2019,
+    "include_supported_prior_background": true,
+    "commercial_scope": true
+  },
+  {
+    "task_id": "ZAF-us_bilateral_air_services",
+    "country": "South Africa",
+    "country_iso3": "ZAF",
+    "topic": "us_bilateral_air_services",
+    "period_start": 2009,
+    "period_end": 2019,
+    "include_supported_prior_background": true,
+    "commercial_scope": true
+  },
+  {
+    "task_id": "ZAF-commercial_connectivity_changes",
+    "country": "South Africa",
+    "country_iso3": "ZAF",
+    "topic": "commercial_connectivity_changes",
+    "period_start": 2009,
+    "period_end": 2019,
+    "include_supported_prior_background": true,
+    "commercial_scope": true
+  },
+  {
+    "task_id": "NGA-us_bilateral_air_services",
+    "country": "Nigeria",
+    "country_iso3": "NGA",
+    "topic": "us_bilateral_air_services",
+    "period_start": 2009,
+    "period_end": 2019,
+    "include_supported_prior_background": true,
+    "commercial_scope": true
+  },
+  {
+    "task_id": "NGA-commercial_connectivity_changes",
+    "country": "Nigeria",
+    "country_iso3": "NGA",
+    "topic": "commercial_connectivity_changes",
+    "period_start": 2009,
+    "period_end": 2019,
+    "include_supported_prior_background": true,
+    "commercial_scope": true
+  }
+]

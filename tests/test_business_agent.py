@@ -82,6 +82,23 @@ class RetrievalTests(unittest.TestCase):
             self.assertEqual(result['links'][0]['url'], 'https://example.org/data.csv')
             self.assertNotIn('secret', result['text'])
 
+    def test_content_links_survive_large_navigation_and_keep_https_policy(self):
+        nav = '<nav>' + ''.join(f'<a href="/data/{i}">Data</a>' for i in range(510)) + '</nav>'
+        raw = nav + '<main><a href="/agreements">Agreements</a><a href="http://old.example/a">Old</a><a href="#top">Self</a><a href="/agreements#part">Duplicate</a></main>'
+        with patch.object(self.fetcher, 'read', return_value=(200, 'text/html', raw, 'https://example.org/page')):
+            links = self.fetcher.fetch_document('https://example.org/page')['links']
+        self.assertEqual(links[0]['url'], 'https://example.org/agreements')
+        self.assertEqual(len(links), 40)
+        self.assertEqual(len({x['url'] for x in links}), 40)
+        self.assertTrue(all(x['url'].startswith('https://') for x in links))
+        self.assertNotIn('https://example.org/page', [x['url'] for x in links])
+
+    def test_navigation_inside_main_does_not_outrank_article(self):
+        raw = '<main><nav><a href="/menu.pdf">Menu</a></nav><a href="/agreement">Agreement</a><a href="/instrument.pdf">Instrument</a></main>'
+        with patch.object(self.fetcher, 'read', return_value=(200, 'text/html', raw, 'https://example.org/page')):
+            links = self.fetcher.fetch_document('https://example.org/page')['links']
+        self.assertEqual([x['title'] for x in links], ['Instrument', 'Agreement', 'Menu'])
+
     def test_unsupported_and_bad_responses(self):
         for response in [(403, 'text/html', 'Denied', 'https://example.org'),
                          (200, 'application/pdf', 'pdf', 'https://example.org'),

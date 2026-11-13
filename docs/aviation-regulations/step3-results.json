@@ -1,0 +1,158 @@
+{
+  "experiment": "SAVED_DOCUMENT_EXTRACTION_REPLAY",
+  "autonomous_search": false,
+  "search_calls": 0,
+  "model_attempts": 6,
+  "model_successes": 6,
+  "verified_events": 0,
+  "documents": 3,
+  "conditions": [
+    "prefix",
+    "sections"
+  ],
+  "results": [
+    {
+      "id": "serpapi-1-prefix",
+      "pages": [],
+      "selected_characters": 1772,
+      "events": [
+        {
+          "document_status": "metadata",
+          "flags": [
+            "INTERNATIONAL_APPLICABILITY_UNESTABLISHED",
+            "UNDERLYING_INSTRUMENT_REQUIRED"
+          ],
+          "candidate_export_dates": {
+            "announcement_date": null,
+            "effective_date": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "serpapi-1-sections",
+      "pages": [],
+      "selected_characters": 1772,
+      "events": [
+        {
+          "document_status": "metadata",
+          "flags": [
+            "INTERNATIONAL_APPLICABILITY_UNESTABLISHED",
+            "UNDERLYING_INSTRUMENT_REQUIRED"
+          ],
+          "candidate_export_dates": {
+            "announcement_date": null,
+            "effective_date": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "serpapi-2-sections",
+      "pages": [],
+      "selected_characters": 544,
+      "events": [
+        {
+          "document_status": "metadata",
+          "flags": [
+            "DATE_REVIEW_REQUIRED",
+            "INTERNATIONAL_APPLICABILITY_UNESTABLISHED",
+            "UNDERLYING_INSTRUMENT_REQUIRED"
+          ],
+          "candidate_export_dates": {
+            "announcement_date": null,
+            "effective_date": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "serpapi-2-prefix",
+      "pages": [],
+      "selected_characters": 544,
+      "events": [
+        {
+          "document_status": "metadata",
+          "flags": [
+            "DATE_REVIEW_REQUIRED",
+            "INTERNATIONAL_APPLICABILITY_UNESTABLISHED",
+            "UNDERLYING_INSTRUMENT_REQUIRED"
+          ],
+          "candidate_export_dates": {
+            "announcement_date": null,
+            "effective_date": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "brave-1-prefix",
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "selected_characters": 23841,
+      "events": [
+        {
+          "document_status": "final_instrument",
+          "flags": [
+            "TOPIC_SCOPE_REVIEW"
+          ],
+          "candidate_export_dates": {
+            "announcement_date": null,
+            "effective_date": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "brave-1-sections",
+      "pages": [
+        1,
+        2,
+        17,
+        18,
+        19,
+        26,
+        42,
+        43,
+        47,
+        91,
+        95,
+        96
+      ],
+      "selected_characters": 23919,
+      "events": [
+        {
+          "document_status": "draft",
+          "flags": [
+            "INCOMPLETE_DATING_LINE",
+            "NOT_ESTABLISHED_AS_ENACTED",
+            "TOPIC_SCOPE_REVIEW"
+          ],
+          "candidate_export_dates": {
+            "announcement_date": null,
+            "effective_date": null
+          }
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "development sample already inspected",
+    "one call per document/condition",
+    "no independent human adjudication",
+    "section ranking can omit relevant provisions",
+    "date type checks are lexical, not a validated semantic verifier"
+  ]
+}

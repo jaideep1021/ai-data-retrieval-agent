@@ -158,6 +158,39 @@ def assess_claim(claim, text, task):
             'failure_labels': reasons}
 
 
+def shortlist_document_links(soup, final, limit=40):
+    """Prefer article links over site menus without assuming a domain or answer.
+
+    Inspect the main content first so a large navigation menu cannot consume
+    the 500-candidate budget. Keep navigation as a fallback. Every returned URL
+    must occur in the page; HTTP links are not silently rewritten to HTTPS.
+    Actual fetching still applies the reader's public-address and robots rules.
+    """
+    content = soup.find('main') or soup.find('article')
+    anchors = list(content.find_all('a', href=True)) if content else []
+    anchors += list(soup.find_all('a', href=True))
+    seen, ranked = set(), []
+    for anchor in anchors:
+        target = urldefrag(urljoin(final, anchor['href']))[0]
+        if not target.startswith('https://') or target == urldefrag(final)[0] or target in seen:
+            continue
+        seen.add(target)
+        parents = list(anchor.parents)
+        navigation = any(getattr(p, 'name', '') in ('nav', 'header', 'footer')
+                         or p.get('role') == 'navigation' for p in parents)
+        in_content = content is not None and any(p is content for p in parents)
+        tier = 2 if navigation else (0 if in_content else 1)
+        title = anchor.get_text(' ', strip=True)[:500]
+        download = bool(re.search(r'\.(?:csv|json|pdf)(?:[?#\s]|$)|\b(?:download|dataset)\b',
+                                  target + ' ' + title, re.I))
+        ranked.append(((tier, not download), {'url': target, 'title': title,
+                       'snippet': '', 'discovered_from': final}))
+        if len(ranked) == 500:
+            break
+    ranked.sort(key=lambda item: item[0])  # Stable: preserve page order within each tier.
+    return [link for _, link in ranked[:limit]]
+
+
 class BusinessRetriever(Retriever):
     """Reuse public-HTTPS/robots/byte limits; add JSON/CSV and discovered links.
 
@@ -175,7 +208,7 @@ class BusinessRetriever(Retriever):
             url = public_url(url)
             if check_robots:
                 self.check_policy(url)
-            with self.session.get(url, timeout=(10, 25), allow_redirects=False, stream=True) as response:
+            with self.session.get(url, timeout=getattr(self, 'document_timeout', (10, 25)), allow_redirects=False, stream=True) as response:
                 if response.status_code in (301, 302, 303, 307, 308):
                     location = response.headers.get('Location')
                     if not location:
@@ -185,7 +218,7 @@ class BusinessRetriever(Retriever):
                 chunks, size = [], 0
                 for chunk in response.iter_content(65536):
                     size += len(chunk)
-                    if size > (MAX_DOCUMENT_BYTES if check_robots else 2_000_000):
+                    if size > (getattr(self, 'document_byte_limit', MAX_DOCUMENT_BYTES) if check_robots else 2_000_000):
                         raise DocumentError('DOCUMENT_TOO_LARGE')
                     chunks.append(chunk)
                 raw = b''.join(chunks)
@@ -196,15 +229,20 @@ class BusinessRetriever(Retriever):
                 return response.status_code, kind, body, url
         raise DocumentError('REDIRECT_LIMIT')
 
-    def fetch_document(self, url):
+    def fetch_document(self, url, *, preserve_raw=None):
         status, kind, raw, final = self.read(url)
         if status != 200:
             raise DocumentError(f'SOURCE_HTTP_{status}')
         kind = kind.lower().split(';')[0]
         raw_bytes = raw if isinstance(raw, bytes) else getattr(self, 'response_bytes', raw.encode('utf-8'))
+        # The caller owns evidence storage. Save the completed response before
+        # parsing so unreadable PDFs remain available for review or later OCR.
+        # Existing callers may omit this hook and retain their original API.
+        if preserve_raw is not None:
+            preserve_raw(raw_bytes, final, kind)
         links = []
         if isinstance(raw, bytes):
-            text = pdf_text(raw)
+            text = pdf_text(raw, max_bytes=getattr(self, 'document_byte_limit', MAX_DOCUMENT_BYTES))
             kind = 'application/pdf'
         elif kind in ('application/json', 'text/json') or kind.endswith('+json'):
             # Preserve numeric lexemes rather than converting decimals to floats.
@@ -215,16 +253,7 @@ class BusinessRetriever(Retriever):
             text = '\n'.join(json.dumps(row) for row in rows)
         elif kind in ('text/html', 'application/xhtml+xml'):
             soup = BeautifulSoup(raw, 'html.parser')
-            for anchor in soup.find_all('a', href=True):
-                target = urldefrag(urljoin(final, anchor['href']))[0]
-                if target.startswith('https://') and target not in {x['url'] for x in links}:
-                    links.append({'url': target, 'title': anchor.get_text(' ', strip=True)[:500],
-                                  'snippet': '', 'discovered_from': final})
-                if len(links) == 500:
-                    break
-            # Prefer download/data links without hard-coding any source domain.
-            links.sort(key=lambda x: not bool(re.search(r'csv|json|pdf|download|dataset|data', x['url']+' '+x['title'], re.I)))
-            links = links[:40]
+            links = shortlist_document_links(soup, final)
             # Keep table rows and headers together instead of one word per line.
             for table in soup.find_all('table'):
                 lines = [' | '.join(cell.get_text(' ', strip=True) for cell in row.find_all(['th', 'td'])) for row in table.find_all('tr')]
