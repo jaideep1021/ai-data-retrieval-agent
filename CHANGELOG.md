@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.0 — Africa panel extension checkpoint — 2026-11-21
+
+- Add BTS bulk retrieval, country-quarter aggregation and separate carrier counts.
+- Add Census trade processing and World Bank, fuel, tourism, ACS and income-classification tools.
+- Preserve missing values, provenance and alternative service views.
+- Add synthetic failure-path tests, pinned Excel readers and CI installation.
+- Document provisional definitions, source gaps and private-input reproduction limits.
+- Publish code and aggregate findings only; private datasets and timesheets are excluded.
+
 ## 0.4.0 — Aviation retrieval development checkpoint — 2026-11-12
 
 - Add bounded commercial aviation discovery, PDF evidence preservation and review workflows.

@@ -1,0 +1,21 @@
+{
+  "source_url": "https://www.census.gov/foreign-trade/schedules/c/countrycodes.html",
+  "checked_date": "2026-11-19",
+  "code_system": "Census Schedule C, four-character strings; distinct from BTS codes",
+  "countries": [
+    {"reference_name":"Angola","bts_code":"AO","census_name":"Angola","census_code":"7620"},
+    {"reference_name":"Cape Verde","bts_code":"CV","census_name":"Cabo Verde","census_code":"7643"},
+    {"reference_name":"Cote d'Ivoire","bts_code":"CI","census_name":"Cote d'Ivoire","census_code":"7480"},
+    {"reference_name":"Egypt","bts_code":"EG","census_name":"Egypt","census_code":"7290"},
+    {"reference_name":"Ethiopia","bts_code":"ET","census_name":"Ethiopia","census_code":"7749"},
+    {"reference_name":"Ghana","bts_code":"GH","census_name":"Ghana","census_code":"7490"},
+    {"reference_name":"Kenya","bts_code":"KE","census_name":"Kenya","census_code":"7790"},
+    {"reference_name":"Morocco","bts_code":"MA","census_name":"Morocco","census_code":"7140"},
+    {"reference_name":"Nigeria","bts_code":"NG","census_name":"Nigeria","census_code":"7530"},
+    {"reference_name":"Rwanda","bts_code":"RW","census_name":"Rwanda","census_code":"7690"},
+    {"reference_name":"Senegal","bts_code":"SN","census_name":"Senegal","census_code":"7440"},
+    {"reference_name":"South Africa","bts_code":"ZA","census_name":"South Africa","census_code":"7910"},
+    {"reference_name":"Togo","bts_code":"TG","census_name":"Togo","census_code":"7520"},
+    {"reference_name":"Zimbabwe","bts_code":"ZW","census_name":"Zimbabwe","census_code":"7960"}
+  ]
+}

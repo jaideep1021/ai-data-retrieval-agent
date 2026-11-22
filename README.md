@@ -8,8 +8,33 @@ The project progresses from a Python Enhancement Proposal (PEP) metadata prototy
 to autonomous source discovery and historical DOT airfare experiments. It separates
 **finding a correct value** from **having sufficient evidence to accept it**.
 
-**Current release: v0.4.0 — Aviation retrieval development checkpoint.**
+**Current release: v0.5.0 — Africa aviation and trade extension checkpoint.**
 Earlier tags preserve the PEP and DOT research baselines.
+
+## Africa aviation and trade extension
+
+This release adds reproducible collection, quarterly processing and validation tools
+for a 14-country panel, using 2015–2019 for comparison and 2020 Q1–2026 Q2 for the
+extension. It preserves raw-source provenance and missing values without imputation.
+Aviation service scope and several supporting-variable definitions await review;
+this is a code and methodology checkpoint, not a finalized research dataset.
+
+- [Concise weekly report and release status](docs/panel-extension/release-v0.5.0.md)
+- [Setup, processing map and reproduction limits](docs/panel-extension/README.md)
+- [Outstanding definition decisions](docs/panel-extension/final-review-decisions.md)
+
+Install the panel dependencies in addition to the existing project dependencies:
+
+```sh
+python -m pip install -r requirements-business.txt -r requirements-panel.txt
+python -m unittest discover -s tests -v
+```
+
+A new clone includes code, synthetic tests and country mappings. Private reference
+workbooks, raw responses, generated panels, correspondence and timesheets are excluded.
+Collectors can acquire official data; historical comparisons and exact saved-panel
+reconstruction require the private inputs. This week's numeric-data work uses
+researcher-configured processing and makes no claim of autonomous AI discovery.
 
 ## Interactive implementation guide
 

@@ -1,0 +1,63 @@
+{
+  "scope": "14 countries in supplied 2015\u20132019 reference",
+  "country_code_system": "BTS country lookup, not Census trade codes",
+  "lookup_url": "https://www.transtats.bts.gov/Download_Lookup.asp?Y11x72=Y_Pbhagel_PbQR",
+  "countries": [
+    {
+      "name": "Angola",
+      "bts_code": "AO"
+    },
+    {
+      "name": "Cape Verde",
+      "bts_code": "CV"
+    },
+    {
+      "name": "Cote d'Ivoire",
+      "bts_code": "CI"
+    },
+    {
+      "name": "Egypt",
+      "bts_code": "EG"
+    },
+    {
+      "name": "Ethiopia",
+      "bts_code": "ET"
+    },
+    {
+      "name": "Ghana",
+      "bts_code": "GH"
+    },
+    {
+      "name": "Kenya",
+      "bts_code": "KE"
+    },
+    {
+      "name": "Morocco",
+      "bts_code": "MA"
+    },
+    {
+      "name": "Nigeria",
+      "bts_code": "NG"
+    },
+    {
+      "name": "Rwanda",
+      "bts_code": "RW"
+    },
+    {
+      "name": "Senegal",
+      "bts_code": "SN"
+    },
+    {
+      "name": "South Africa",
+      "bts_code": "ZA"
+    },
+    {
+      "name": "Togo",
+      "bts_code": "TG"
+    },
+    {
+      "name": "Zimbabwe",
+      "bts_code": "ZW"
+    }
+  ]
+}
