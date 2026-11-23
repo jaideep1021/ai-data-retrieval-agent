@@ -36,6 +36,12 @@ for (const item of sheets) {
     sheet.getRange('A1:C365').format.columnWidth=13;
     sheet.getRange('D1:D365').format.columnWidth=33;
   }
+  // Calendar years are identifiers, not quantities: display 2021, never 2,021.
+  for (let i = 0; i < headers.length; i++) {
+    if (/^year$/i.test(headers[i])) {
+      sheet.getRangeByIndexes(1, i, item.rows.length, 1).setNumberFormat('0');
+    }
+  }
   if (item.name === 'Missing values') {
     sheet.getRangeByIndexes(0,4,item.rows.length+1,2).format.columnWidth=65;
   }
@@ -55,6 +61,7 @@ await fs.writeFile(path.join(folder,'sheet-errors.ndjson'), (await book.inspect(
 })).ndjson);
 await (await SpreadsheetFile.exportXlsx(book)).save(path.join(output,'Africa-clarified-extension.xlsx'));
 for (const [sheetName,range,name] of [
+  ['Scheduled main','A1:F7','years'],
   ['Scheduled main','BT1:BX7','new-fields'], ['Scheduled main','AV1:BC5','carrier-fields'],
   ['Missing values','A1:F5','missing'], ['Notes','A2:B8','notes'], ['Notes','A9:B15','notes-method']]) {
   const png=await book.render({sheetName,range,scale:1,format:'png'});
