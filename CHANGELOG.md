@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.1 — Clarified Africa panel definitions — 2026-11-23
+
+- Apply scheduled-primary service scope with separate all-service comparisons.
+- Clarify foreign/US carriers, fixed reference income groups, US fuel and ACS birthplace measures.
+- Add national destination unemployment, US quarterly unemployment, consumption PPP and evidence-based Nonstop.
+- Preserve missing months, including BLS October 2025; no modeled-series gap filling.
+- Add offline rebuild/export checks and 11 synthetic failure-path tests.
+- Publish code and aggregate findings; private reference data, workbook and personal guide remain excluded.
+
 ## 0.5.0 — Africa panel extension checkpoint — 2026-11-21
 
 - Add BTS bulk retrieval, country-quarter aggregation and separate carrier counts.
